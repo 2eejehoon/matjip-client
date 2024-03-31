@@ -7,9 +7,16 @@ declare module "styled-components" {
             black: string;
         };
 
-        fontSize: {};
+        fontSize: {
+            small: string;
+            medium: string;
+            large: string;
+        };
 
-        fontWeight: {};
+        fontWeight: {
+            normal: string;
+            bold: string;
+        };
 
         border: {
             thin: string;
@@ -29,7 +36,7 @@ declare module "styled-components" {
             nav: {
                 height: string;
             };
-            menu: {
+            icon: {
                 width: string;
                 height: string;
             };

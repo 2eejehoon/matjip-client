@@ -12,9 +12,16 @@ const StyledComponentsThemeProvider = ({
             black: "#000000"
         },
 
-        fontSize: {},
+        fontSize: {
+            small: "12px",
+            medium: "14px",
+            large: "16px"
+        },
 
-        fontWeight: {},
+        fontWeight: {
+            normal: "400",
+            bold: "700"
+        },
 
         border: {
             thin: "1px solid lightgray",
@@ -34,7 +41,7 @@ const StyledComponentsThemeProvider = ({
             nav: {
                 height: "50px"
             },
-            menu: {
+            icon: {
                 width: "24px",
                 height: "24px"
             }
