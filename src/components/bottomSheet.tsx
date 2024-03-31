@@ -72,7 +72,7 @@ const BottomSheet = () => {
 
     if (isBottomSheetOpen) {
         return (
-            <Wrapper animate={{ y: 24 }} transition={{ type: "keyframes" }}>
+            <Wrapper animate={{ y: 12 }} transition={{ type: "keyframes" }}>
                 {bottomSheetContent.at(-1)}
             </Wrapper>
         );
@@ -86,8 +86,8 @@ const Wrapper = styled(motion.div)`
     flex-direction: column;
     position: fixed;
     bottom: 0;
-    border-radius: 24px 24px 0 0;
-    padding: 24px;
+    border-radius: 12px 12px 0 0;
+    padding: 12px 12px 12px 12px;
     width: 100%;
     height: auto;
     border: ${({ theme }) => theme.border.thin};
