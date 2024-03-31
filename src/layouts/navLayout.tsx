@@ -1,10 +1,11 @@
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
-const BaseLayout = ({ children }: PropsWithChildren) => {
+const NavLayout = ({ children }: PropsWithChildren) => {
     return (
         <Page>
             <Header />
+            <StickyNavigation />
             <Main>{children}</Main>
         </Page>
     );
@@ -25,4 +26,12 @@ const Main = styled.main`
     min-height: calc(100% - ${({ theme }) => theme.element.header.height});
 `;
 
-export default BaseLayout;
+const StickyNavigation = styled.nav`
+    position: sticky;
+    top: 0;
+    height: ${({ theme }) => theme.element.nav.height};
+    border-bottom: ${({ theme }) => theme.border.thin};
+    background-color: ${({ theme }) => theme.backgroundColor.white};
+`;
+
+export default NavLayout;
