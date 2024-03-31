@@ -8,7 +8,7 @@ const StyledComponentsThemeProvider = ({
 }: StyledComponentsThemeProvider) => {
     const theme: DefaultTheme = {
         color: {
-            white: "#fffff",
+            white: "#FFFFFF",
             black: "#000000"
         },
 
@@ -23,7 +23,7 @@ const StyledComponentsThemeProvider = ({
         },
 
         backgroundColor: {
-            white: "#fffff",
+            white: "#FFFFFF",
             black: "#000000"
         },
 
