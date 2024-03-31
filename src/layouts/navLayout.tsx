@@ -12,10 +12,7 @@ const NavLayout = ({ children }: PropsWithChildren) => {
     );
 };
 
-const Page = styled.div`
-    width: 100vw;
-    height: 100vh;
-`;
+const Page = styled.div``;
 
 const Main = styled.main`
     min-height: calc(100% - ${({ theme }) => theme.element.header.height});

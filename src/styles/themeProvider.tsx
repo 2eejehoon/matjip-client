@@ -8,21 +8,23 @@ const StyledComponentsThemeProvider = ({
 }: StyledComponentsThemeProvider) => {
     const theme: DefaultTheme = {
         color: {
-            black: "black",
-            whitesmoke: "whitesmoke"
+            white: "#FFFFFF",
+            black: "#000000"
         },
 
         fontSize: {},
 
         fontWeight: {},
 
-        backgroundColor: {
-            white: "white",
-            tomato: "tomato"
+        border: {
+            thin: "1px solid lightgray",
+            medium: "1.5px solid lightgray",
+            thick: "2px solid lightgray"
         },
 
-        border: {
-            thin: "1px solid lightgray"
+        backgroundColor: {
+            white: "#FFFFFF",
+            black: "#000000"
         },
 
         element: {
@@ -31,10 +33,6 @@ const StyledComponentsThemeProvider = ({
             },
             nav: {
                 height: "50px"
-            },
-            sidebar: {
-                width: "200px",
-                height: "100vh"
             },
             menu: {
                 width: "36px",

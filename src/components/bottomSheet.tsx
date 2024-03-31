@@ -2,37 +2,63 @@ import {
     PropsWithChildren,
     ReactNode,
     createContext,
-    useCallback,
     useContext,
     useState
 } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 export const BottomSheetContext = createContext({
-    isOpen: false,
-    toggle: () => {},
-    content: []
+    isBottomSheetOpen: false,
+    toggleBottomSheet: () => {},
+    openBottomSheet: () => {},
+    closeBottomSheet: () => {},
+    bottomSheetContent: [] as ReactNode[],
+    popContentFromBottomSheet: () => {},
+    pushContentToBottomSheet: (component: ReactNode) => {}
 });
 
 export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [content, setContent] = useState<ReactNode[]>([]);
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+    const [bottomSheetContent, setBottomSheetContent] = useState<ReactNode[]>(
+        []
+    );
 
-    const toggle = useCallback(() => {
-        setIsOpen((isOpen) => !isOpen);
-    }, []);
-
-    const close = () => {
-        setIsOpen(false);
+    const toggleBottomSheet = () => {
+        setIsBottomSheetOpen((prev) => !prev);
     };
 
-    const open = () => {
-        setIsOpen(true);
+    const openBottomSheet = () => {
+        setIsBottomSheetOpen(true);
+    };
+
+    const closeBottomSheet = () => {
+        setIsBottomSheetOpen(false);
+    };
+
+    const popContentFromBottomSheet = () => {
+        bottomSheetContent.pop();
+        setBottomSheetContent([...bottomSheetContent]);
+    };
+
+    const pushContentToBottomSheet = (component: ReactNode) => {
+        setBottomSheetContent(bottomSheetContent.concat(component));
     };
 
     return (
-        <BottomSheetContext.Provider value={{ isOpen, toggle, content: [] }}>
+        <BottomSheetContext.Provider
+            value={{
+                isBottomSheetOpen,
+                toggleBottomSheet,
+                openBottomSheet,
+                closeBottomSheet,
+                bottomSheetContent,
+                popContentFromBottomSheet,
+                pushContentToBottomSheet
+            }}
+        >
             {children}
+            <BottomSheet />
         </BottomSheetContext.Provider>
     );
 };
@@ -41,12 +67,29 @@ export const useBottomSheetContext = () => {
     return useContext(BottomSheetContext);
 };
 
-const Sidebar = () => {
-    const [isOpen, toggle] = useBottomSheetContext();
+const BottomSheet = () => {
+    const { isBottomSheetOpen, bottomSheetContent } = useBottomSheetContext();
 
-    return <Wrapper></Wrapper>;
+    if (isBottomSheetOpen) {
+        return (
+            <Wrapper animate={{ y: 12 }} transition={{ type: "keyframes" }}>
+                {bottomSheetContent.at(-1)}
+            </Wrapper>
+        );
+    }
+
+    return null;
 };
 
-const Wrapper = styled.section``;
-
-export default Sidebar;
+const Wrapper = styled(motion.div)`
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    border-radius: 24px 24px 0 0;
+    padding: 24px 12px 12px 12px;
+    width: 100%;
+    height: auto;
+    border: ${({ theme }) => theme.border.thin};
+    background-color: ${({ theme }) => theme.backgroundColor.white};
+`;
