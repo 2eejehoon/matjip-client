@@ -10,4 +10,8 @@ const Wrapper = styled.div`
     background-color: ${({ theme }) => theme.backgroundColor.white};
 `;
 
+const Menu = styled.button`
+    width: ${({ theme }) => theme.element.menu.width};
+`;
+
 export default Header;
