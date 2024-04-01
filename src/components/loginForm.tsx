@@ -7,11 +7,11 @@ import { useRouter } from "next/router";
 
 const LoginForm = () => {
     const router = useRouter();
-    const [id, setId] = useState("");
+    const [email, setEmail] = useState("");
     const [passowrd, setPassword] = useState("");
 
-    const onIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setId(e.target.value);
+    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
     };
 
     const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +19,7 @@ const LoginForm = () => {
     };
 
     const onLoginClick = () => {
-        console.log("login");
+        console.log({ email, passowrd });
     };
 
     const onSignupClick = () => {
@@ -39,12 +39,12 @@ const LoginForm = () => {
             <Title>로그인</Title>
             <Form>
                 <div>
-                    <Label>아이디</Label>
+                    <Label>이메일</Label>
                     <Input
-                        type="text"
-                        value={id}
-                        onChange={onIdChange}
-                        placeholder="아이디를 입력해주세요."
+                        type="email"
+                        value={email}
+                        onChange={onEmailChange}
+                        placeholder="이메일을 입력해주세요."
                         required
                     />
                 </div>
