@@ -1,19 +1,38 @@
 import styled from "styled-components";
 import { useBottomSheetContext } from "./bottomSheet";
 import { CiMenuBurger, CiSearch, CiUser } from "react-icons/ci";
+import { useRouter } from "next/router";
 
 const Header = () => {
-    const { toggleBottomSheet, pushContentToBottomSheet } =
-        useBottomSheetContext();
+    const router = useRouter();
+    const {
+        isBottomSheetOpen,
+        popContentFromBottomSheet,
+        toggleBottomSheet,
+        pushContentToBottomSheet
+    } = useBottomSheetContext();
 
     const onMenuClick = () => {
+        if (isBottomSheetOpen) {
+            popContentFromBottomSheet();
+        } else {
+            pushContentToBottomSheet(<>메뉴</>);
+        }
         toggleBottomSheet();
-        pushContentToBottomSheet(<BottomSheetContent />);
     };
 
-    const onSearchClick = () => {};
+    const onSearchClick = () => {
+        if (isBottomSheetOpen) {
+            popContentFromBottomSheet();
+        } else {
+            pushContentToBottomSheet(<>검색</>);
+        }
+        toggleBottomSheet();
+    };
 
-    const onUserClick = () => {};
+    const onUserClick = () => {
+        router.push("/login");
+    };
 
     return (
         <Wrapper>
@@ -69,11 +88,6 @@ const Plus = styled(CiUser)`
     &:hover {
         cursor: pointer;
     }
-`;
-
-const BottomSheetContent = styled.div`
-    height: 300px;
-    width: 100%;
 `;
 
 export default Header;

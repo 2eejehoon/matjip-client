@@ -3,10 +3,11 @@ import {
     ReactNode,
     createContext,
     useContext,
-    useState
+    useState,
+    DragEvent
 } from "react";
 import styled from "styled-components";
-import { animate, motion, useAnimation } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 
 export const BottomSheetContext = createContext({
     isBottomSheetOpen: false,
@@ -32,7 +33,6 @@ export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
         } else {
             animate.start("visible");
         }
-
         setIsBottomSheetOpen((prev) => !prev);
     };
 
@@ -103,7 +103,7 @@ const Wrapper = styled(motion.div)`
     padding: 0 12px 0 12px;
     width: 100%;
     height: auto;
-    overflow: auto;
+    z-index: 1;
     border: ${({ theme }) => theme.border.thin};
     background-color: ${({ theme }) => theme.backgroundColor.white};
 `;
