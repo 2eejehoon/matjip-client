@@ -8,11 +8,16 @@ import { useRouter } from "next/router";
 const SignupForm = () => {
     const router = useRouter();
     const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
     const [passowrd, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
 
     const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
+    };
+
+    const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value);
     };
 
     const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,10 +51,20 @@ const SignupForm = () => {
                 <div>
                     <Label>이메일</Label>
                     <Input
-                        type="text"
+                        type="email"
                         value={email}
                         onChange={onEmailChange}
                         placeholder="이메일을 입력해주세요."
+                        required
+                    />
+                </div>
+                <div>
+                    <Label>이름</Label>
+                    <Input
+                        type="text"
+                        value={name}
+                        onChange={onNameChange}
+                        placeholder="이름을 입력해주세요."
                         required
                     />
                 </div>

@@ -27,11 +27,11 @@ const LoginForm = () => {
     };
 
     const onFindIdClick = () => {
-        router.push("/user/find-id");
+        router.push("/users/find-id");
     };
 
     const onFindPasswordClick = () => {
-        router.push("/user/find-password");
+        router.push("/users/find-password");
     };
 
     return (
