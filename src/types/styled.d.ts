@@ -5,6 +5,7 @@ declare module "styled-components" {
         color: {
             white: string;
             black: string;
+            lightgray: string;
         };
 
         fontSize: {
@@ -22,6 +23,12 @@ declare module "styled-components" {
             thin: string;
             medium: string;
             thick: string;
+        };
+
+        borderRadius: {
+            small: string;
+            medium: string;
+            large: string;
         };
 
         backgroundColor: {

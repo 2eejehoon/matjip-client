@@ -9,7 +9,8 @@ const StyledComponentsThemeProvider = ({
     const theme: DefaultTheme = {
         color: {
             white: "#FFFFFF",
-            black: "#000000"
+            black: "#000000",
+            lightgray: "#D3D3D3"
         },
 
         fontSize: {
@@ -29,6 +30,12 @@ const StyledComponentsThemeProvider = ({
             thick: "2px solid lightgray"
         },
 
+        borderRadius: {
+            small: "6px",
+            medium: "12px",
+            large: "18px"
+        },
+
         backgroundColor: {
             white: "#FFFFFF",
             black: "#000000"
@@ -42,8 +49,8 @@ const StyledComponentsThemeProvider = ({
                 height: "50px"
             },
             icon: {
-                width: "24px",
-                height: "24px"
+                width: "36px",
+                height: "36px"
             }
         }
     };
