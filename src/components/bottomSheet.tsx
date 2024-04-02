@@ -3,8 +3,7 @@ import {
     ReactNode,
     createContext,
     useContext,
-    useState,
-    DragEvent
+    useState
 } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
