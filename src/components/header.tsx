@@ -54,7 +54,7 @@ const Menu = styled(CiMenuBurger)`
 
 const Rightbar = styled.div`
     display: flex;
-    gap: 5px;
+    gap: 12px;
 `;
 
 const Search = styled(CiSearch)`

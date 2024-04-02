@@ -3,9 +3,7 @@ import { ThemeProvider, type DefaultTheme } from "styled-components";
 
 type StyledComponentsThemeProvider = PropsWithChildren;
 
-const StyledComponentsThemeProvider = ({
-    children
-}: StyledComponentsThemeProvider) => {
+const StyledComponentsThemeProvider = ({ children }: StyledComponentsThemeProvider) => {
     const theme: DefaultTheme = {
         color: {
             white: "#FFFFFF",
@@ -49,8 +47,8 @@ const StyledComponentsThemeProvider = ({
                 height: "50px"
             },
             icon: {
-                width: "36px",
-                height: "36px"
+                width: "32px",
+                height: "32px"
             }
         }
     };

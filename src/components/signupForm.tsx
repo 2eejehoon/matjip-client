@@ -62,19 +62,19 @@ const SignupForm = () => {
                 </div>
                 <LoginButton onClick={onSignupClick}>회원가입</LoginButton>
             </Form>
-            <FlexBox>
+            <Container>
                 <Anchor href={"/signup"}>회원가입</Anchor>
                 <Divider />
                 <Anchor href={"/users/find-email"}>이메일 찾기</Anchor>
                 <Divider />
                 <Anchor href={"/users/find-passowrd"}>비밀번호 찾기</Anchor>
-            </FlexBox>
-            <FlexBox>
+            </Container>
+            <Container>
                 <GoogleLogin />
                 <KakaoLogin />
                 <NaverLogin />
                 <GithubLogin />
-            </FlexBox>
+            </Container>
         </Wrapper>
     );
 };
@@ -150,10 +150,10 @@ const LoginButton = styled.button`
     }
 `;
 
-const FlexBox = styled.div`
+const Container = styled.div`
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 12px;
 `;
 
 const Anchor = styled(Link)`
