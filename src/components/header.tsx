@@ -5,12 +5,8 @@ import { useRouter } from "next/router";
 
 const Header = () => {
     const router = useRouter();
-    const {
-        isBottomSheetOpen,
-        popContentFromBottomSheet,
-        toggleBottomSheet,
-        pushContentToBottomSheet
-    } = useBottomSheetContext();
+    const { isBottomSheetOpen, popContentFromBottomSheet, toggleBottomSheet, pushContentToBottomSheet } =
+        useBottomSheetContext();
 
     const onMenuClick = () => {
         if (isBottomSheetOpen) {
