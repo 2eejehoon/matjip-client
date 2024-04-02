@@ -1,39 +1,20 @@
-import {
-    PropsWithChildren,
-    ReactNode,
-    createContext,
-    useContext,
-    useState
-} from "react";
+import { PropsWithChildren, ReactNode, createContext, useContext, useState } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 
 export const BottomSheetContext = createContext({
     isBottomSheetOpen: false,
-    toggleBottomSheet: () => {},
     openBottomSheet: () => {},
     closeBottomSheet: () => {},
-    bottomSheetContent: [] as ReactNode[],
-    popContentFromBottomSheet: () => {},
-    pushContentToBottomSheet: (component: ReactNode) => {},
+    bottomSheetContent: null as ReactNode,
+    setContentToBottomSheet: (component: ReactNode) => {},
     animate: {}
 });
 
 export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-    const [bottomSheetContent, setBottomSheetContent] = useState<ReactNode[]>(
-        []
-    );
+    const [bottomSheetContent, setBottomSheetContent] = useState<ReactNode>(null);
     const animate = useAnimation();
-
-    const toggleBottomSheet = () => {
-        if (isBottomSheetOpen) {
-            animate.start("hidden");
-        } else {
-            animate.start("visible");
-        }
-        setIsBottomSheetOpen((prev) => !prev);
-    };
 
     const openBottomSheet = () => {
         animate.start("visible");
@@ -45,25 +26,18 @@ export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
         setIsBottomSheetOpen(false);
     };
 
-    const popContentFromBottomSheet = () => {
-        bottomSheetContent.pop();
-        setBottomSheetContent([...bottomSheetContent]);
-    };
-
-    const pushContentToBottomSheet = (component: ReactNode) => {
-        setBottomSheetContent(bottomSheetContent.concat(component));
+    const setContentToBottomSheet = (component: ReactNode) => {
+        setBottomSheetContent(component);
     };
 
     return (
         <BottomSheetContext.Provider
             value={{
                 isBottomSheetOpen,
-                toggleBottomSheet,
                 openBottomSheet,
                 closeBottomSheet,
                 bottomSheetContent,
-                popContentFromBottomSheet,
-                pushContentToBottomSheet,
+                setContentToBottomSheet,
                 animate
             }}
         >
@@ -78,18 +52,21 @@ export const useBottomSheetContext = () => {
 };
 
 const BottomSheet = () => {
-    const { bottomSheetContent, animate } = useBottomSheetContext();
+    const { isBottomSheetOpen, bottomSheetContent, animate, closeBottomSheet } = useBottomSheetContext();
 
     return (
-        <Wrapper
-            initial="hidden"
-            animate={animate}
-            variants={{ visible: { y: "0" }, hidden: { y: "100%" } }}
-            transition={{ type: "spring", damping: 15, stiffness: 100 }}
-        >
-            <Handle />
-            {bottomSheetContent.at(-1)}
-        </Wrapper>
+        <>
+            <Wrapper
+                initial="hidden"
+                animate={animate}
+                variants={{ visible: { y: "0" }, hidden: { y: "100%" } }}
+                transition={{ type: "spring", damping: 50, stiffness: 500 }}
+            >
+                <Handle />
+                {bottomSheetContent}
+            </Wrapper>
+            {isBottomSheetOpen && <Overlay onClick={closeBottomSheet} />}
+        </>
     );
 };
 
@@ -102,9 +79,19 @@ const Wrapper = styled(motion.div)`
     padding: 0 12px 0 12px;
     width: 100%;
     height: auto;
+    min-height: 50%;
     z-index: 1;
     border: ${({ theme }) => theme.border.thin};
     background-color: ${({ theme }) => theme.backgroundColor.white};
+`;
+
+const Overlay = styled.div`
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 `;
 
 const Handle = styled.div`

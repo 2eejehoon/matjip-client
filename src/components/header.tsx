@@ -5,25 +5,16 @@ import { useRouter } from "next/router";
 
 const Header = () => {
     const router = useRouter();
-    const { isBottomSheetOpen, popContentFromBottomSheet, toggleBottomSheet, pushContentToBottomSheet } =
-        useBottomSheetContext();
+    const { setContentToBottomSheet, openBottomSheet } = useBottomSheetContext();
 
     const onMenuClick = () => {
-        if (isBottomSheetOpen) {
-            popContentFromBottomSheet();
-        } else {
-            pushContentToBottomSheet(<>메뉴</>);
-        }
-        toggleBottomSheet();
+        setContentToBottomSheet(<>메뉴</>);
+        openBottomSheet();
     };
 
     const onSearchClick = () => {
-        if (isBottomSheetOpen) {
-            popContentFromBottomSheet();
-        } else {
-            pushContentToBottomSheet(<>검색</>);
-        }
-        toggleBottomSheet();
+        setContentToBottomSheet(<>검색</>);
+        openBottomSheet();
     };
 
     const onUserClick = () => {
