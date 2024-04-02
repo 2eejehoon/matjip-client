@@ -1,13 +1,12 @@
 import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
-import { RiKakaoTalkFill, RiGoogleFill } from "react-icons/ri";
-import { FaGithub } from "react-icons/fa";
-import { SiNaver } from "react-icons/si";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import GoogleLogin from "./googleLogin";
+import NaverLogin from "./naverLogin";
+import KakaoLogin from "./kakaoLogin";
+import GithubLogin from "./githubLogin";
 
 const SignupForm = () => {
-    const router = useRouter();
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [passowrd, setPassword] = useState("");
@@ -87,10 +86,10 @@ const SignupForm = () => {
                 <Anchor href={"/users/find-passowrd"}>비밀번호 찾기</Anchor>
             </FlexBox>
             <FlexBox>
-                <Google />
-                <Kakao />
-                <Naver />
-                <Github />
+                <GoogleLogin />
+                <KakaoLogin />
+                <NaverLogin />
+                <GithubLogin />
             </FlexBox>
         </Wrapper>
     );
@@ -196,43 +195,6 @@ const Divider = styled.span`
         font-size: ${({ theme }) => theme.fontSize.medium};
         font-weight: ${({ theme }) => theme.fontWeight.normal};
         content: "|";
-    }
-`;
-
-const Google = styled(RiGoogleFill)`
-    width: ${({ theme }) => theme.element.icon.width};
-    height: ${({ theme }) => theme.element.icon.height};
-
-    &:hover {
-        cursor: pointer;
-    }
-`;
-
-const Kakao = styled(RiKakaoTalkFill)`
-    width: ${({ theme }) => theme.element.icon.width};
-    height: ${({ theme }) => theme.element.icon.height};
-
-    &:hover {
-        cursor: pointer;
-    }
-`;
-
-const Naver = styled(SiNaver)`
-    padding: 4px;
-    width: ${({ theme }) => theme.element.icon.width};
-    height: ${({ theme }) => theme.element.icon.height};
-
-    &:hover {
-        cursor: pointer;
-    }
-`;
-
-const Github = styled(FaGithub)`
-    width: ${({ theme }) => theme.element.icon.width};
-    height: ${({ theme }) => theme.element.icon.height};
-
-    &:hover {
-        cursor: pointer;
     }
 `;
 
