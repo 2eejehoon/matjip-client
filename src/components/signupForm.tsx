@@ -4,6 +4,7 @@ import { RiKakaoTalkFill, RiGoogleFill } from "react-icons/ri";
 import { FaGithub } from "react-icons/fa";
 import { SiNaver } from "react-icons/si";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const SignupForm = () => {
     const router = useRouter();
@@ -30,18 +31,6 @@ const SignupForm = () => {
 
     const onSignupClick = () => {
         console.log("login");
-    };
-
-    const onLoginClick = () => {
-        router.push("/login");
-    };
-
-    const onFindIdClick = () => {
-        router.push("/users/find-id");
-    };
-
-    const onFindPasswordClick = () => {
-        router.push("/users/find-password");
     };
 
     return (
@@ -91,11 +80,11 @@ const SignupForm = () => {
                 <LoginButton onClick={onSignupClick}>회원가입</LoginButton>
             </Form>
             <FlexBox>
-                <Anchor onClick={onLoginClick}>로그인</Anchor>
+                <Anchor href={"/signup"}>회원가입</Anchor>
                 <Divider />
-                <Anchor onClick={onFindIdClick}>아이디 찾기</Anchor>
+                <Anchor href={"/users/find-email"}>이메일 찾기</Anchor>
                 <Divider />
-                <Anchor onClick={onFindPasswordClick}>비밀번호 찾기</Anchor>
+                <Anchor href={"/users/find-passowrd"}>비밀번호 찾기</Anchor>
             </FlexBox>
             <FlexBox>
                 <Google />
@@ -184,7 +173,7 @@ const FlexBox = styled.div`
     gap: 10px;
 `;
 
-const Anchor = styled.a`
+const Anchor = styled(Link)`
     display: flex;
     justify-content: flex-start;
     align-items: center;
