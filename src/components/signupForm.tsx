@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import GoogleLogin from "./googleLogin";
@@ -11,22 +11,6 @@ const SignupForm = () => {
     const [name, setName] = useState("");
     const [passowrd, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-
-    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
-
-    const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    };
-
-    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    };
-
-    const onPasswordConfirmChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPasswordConfirm(e.target.value);
-    };
 
     const onSignupClick = () => {
         console.log("login");
@@ -41,7 +25,7 @@ const SignupForm = () => {
                     <Input
                         type="email"
                         value={email}
-                        onChange={onEmailChange}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="이메일을 입력해주세요."
                         required
                     />
@@ -51,7 +35,7 @@ const SignupForm = () => {
                     <Input
                         type="text"
                         value={name}
-                        onChange={onNameChange}
+                        onChange={(e) => setName(e.target.value)}
                         placeholder="이름을 입력해주세요."
                         required
                     />
@@ -61,7 +45,7 @@ const SignupForm = () => {
                     <Input
                         type="password"
                         value={passowrd}
-                        onChange={onPasswordChange}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="비밀번호를 입력해주세요."
                         required
                     />
@@ -71,7 +55,7 @@ const SignupForm = () => {
                     <Input
                         type="password"
                         value={passwordConfirm}
-                        onChange={onPasswordConfirmChange}
+                        onChange={(e) => setPasswordConfirm(e.target.value)}
                         placeholder="비밀번호를 입력해주세요."
                         required
                     />
