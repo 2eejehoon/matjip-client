@@ -63,7 +63,7 @@ const SignupForm = () => {
                 <LoginButton onClick={onSignupClick}>회원가입</LoginButton>
             </Form>
             <Container>
-                <Anchor href={"/signup"}>회원가입</Anchor>
+                <Anchor href={"/login"}>로그인</Anchor>
                 <Divider />
                 <Anchor href={"/users/find-email"}>이메일 찾기</Anchor>
                 <Divider />
