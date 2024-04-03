@@ -1,10 +1,9 @@
+import Link from "next/link";
 import styled from "styled-components";
 import { useBottomSheetContext } from "./bottomSheet";
 import { CiMenuBurger, CiSearch, CiUser } from "react-icons/ci";
-import { useRouter } from "next/router";
 
 const Header = () => {
-    const router = useRouter();
     const { setContentToBottomSheet, openBottomSheet } = useBottomSheetContext();
 
     const onMenuClick = () => {
@@ -17,16 +16,14 @@ const Header = () => {
         openBottomSheet();
     };
 
-    const onUserClick = () => {
-        router.push("/login");
-    };
-
     return (
         <Wrapper>
             <Menu role="button" onClick={onMenuClick} />
             <Rightbar>
                 <Search onClick={onSearchClick} />
-                <Plus onClick={onUserClick} />
+                <Link href="/login">
+                    <Plus />
+                </Link>
             </Rightbar>
         </Wrapper>
     );
