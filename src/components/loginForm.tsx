@@ -45,7 +45,7 @@ const LoginForm = () => {
                 <Divider />
                 <Anchor href={"/users/find-email"}>이메일 찾기</Anchor>
                 <Divider />
-                <Anchor href={"/users/find-passowrd"}>비밀번호 찾기</Anchor>
+                <Anchor href={"/users/find-password"}>비밀번호 찾기</Anchor>
             </Container>
             <Container>
                 <GoogleLogin />
