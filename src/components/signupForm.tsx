@@ -5,39 +5,48 @@ import GoogleLogin from "./googleLogin";
 import NaverLogin from "./naverLogin";
 import KakaoLogin from "./kakaoLogin";
 import GithubLogin from "./githubLogin";
+import { useMutation } from "@tanstack/react-query";
 
 const SignupForm = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const { data, mutate: onSignup } = useMutation({
+        mutationKey: ["SIGNUP"],
+        mutationFn: async (body: { email: string; name: string; password: string; passwordConfirm: string }) => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/signup`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) {
+                    throw new Error();
+                }
+
+                return response.json();
+            } catch (error) {
+                throw new Error();
+            }
+        }
+    });
 
     const onSignupClick = async (e: FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/signup`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email,
-                    name,
-                    password,
-                    passwordConfirm
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error();
+        onSignup(
+            { email, name, password, passwordConfirm },
+            {
+                onSuccess: () => window.location.replace("/login")
             }
-
-            return response.json();
-        } catch (error) {
-            throw new Error();
-        }
+        );
     };
+
+    console.log(data);
 
     return (
         <Wrapper>

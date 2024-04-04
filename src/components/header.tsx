@@ -7,7 +7,7 @@ const Header = () => {
     const { setContentToBottomSheet, openBottomSheet } = useBottomSheetContext();
 
     const onMenuClick = () => {
-        setContentToBottomSheet(<>메뉴</>);
+        setContentToBottomSheet(<></>);
         openBottomSheet();
     };
 
