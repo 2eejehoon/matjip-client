@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import GoogleLogin from "./googleLogin";
@@ -9,11 +9,34 @@ import GithubLogin from "./githubLogin";
 const SignupForm = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
-    const [passowrd, setPassword] = useState("");
+    const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
 
-    const onSignupClick = () => {
-        console.log("login");
+    const onSignupClick = async (e: FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/signup`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    name,
+                    password,
+                    passwordConfirm
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error();
+            }
+
+            return response.json();
+        } catch (error) {
+            throw new Error();
+        }
     };
 
     return (
@@ -44,7 +67,7 @@ const SignupForm = () => {
                     <Label>비밀번호</Label>
                     <Input
                         type="password"
-                        value={passowrd}
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="비밀번호를 입력해주세요."
                         required
@@ -67,7 +90,7 @@ const SignupForm = () => {
                 <Divider />
                 <Anchor href={"/users/find-email"}>이메일 찾기</Anchor>
                 <Divider />
-                <Anchor href={"/users/find-passowrd"}>비밀번호 찾기</Anchor>
+                <Anchor href={"/users/find-password"}>비밀번호 찾기</Anchor>
             </Container>
             <Container>
                 <GoogleLogin />
