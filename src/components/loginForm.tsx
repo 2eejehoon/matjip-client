@@ -1,18 +1,45 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import NaverLogin from "./naverLogin";
 import GoogleLogin from "./googleLogin";
 import KakaoLogin from "./kakaoLogin";
 import GithubLogin from "./githubLogin";
+import { useMutation } from "@tanstack/react-query";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
-    const [passowrd, setPassword] = useState("");
+    const [password, setPassword] = useState("");
+    const { data: user, mutate: onLogin } = useMutation({
+        mutationKey: ["LOGIN"],
+        mutationFn: async (body: { email: string; password: string }) => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/login`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
 
-    const onLoginClick = () => {
-        console.log({ email, passowrd });
+                if (!response.ok) {
+                    throw new Error();
+                }
+
+                return response.json();
+            } catch (error) {
+                throw new Error();
+            }
+        }
+    });
+
+    const onLoginClick = (e: FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        onLogin({ email, password });
     };
+
+    console.log(user);
 
     return (
         <Wrapper>
@@ -32,7 +59,7 @@ const LoginForm = () => {
                     <Label>비밀번호</Label>
                     <Input
                         type="password"
-                        value={passowrd}
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="비밀번호를 입력해주세요."
                         required
