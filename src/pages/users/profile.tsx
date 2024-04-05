@@ -3,15 +3,22 @@ import { useQuery } from "@tanstack/react-query";
 import { GetServerSidePropsContext } from "next";
 import { ReactElement } from "react";
 import cookies from "next-cookies";
+import { ROUTE_MAP } from "@/utils/route";
 
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
     const cookieStore = cookies(context);
 
-    console.log(cookieStore);
+    if (cookieStore.accessToken) {
+        return {
+            props: {
+                accessToken: cookieStore.accessToken
+            }
+        };
+    }
 
     return {
-        props: {
-            accessToken: cookieStore.accessToken
+        redirect: {
+            destination: `${ROUTE_MAP["LOGIN"]}`
         }
     };
 };
