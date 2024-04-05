@@ -1,18 +1,13 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { useBottomSheetContext } from "./bottomSheet";
-import { CiMenuBurger, CiSearch, CiUser } from "react-icons/ci";
+import { CiMenuBurger, CiUser } from "react-icons/ci";
 
 const Header = () => {
     const { setContentToBottomSheet, openBottomSheet } = useBottomSheetContext();
 
     const onMenuClick = () => {
-        setContentToBottomSheet(<></>);
-        openBottomSheet();
-    };
-
-    const onSearchClick = () => {
-        setContentToBottomSheet(<>검색</>);
+        setContentToBottomSheet(<>메뉴</>);
         openBottomSheet();
     };
 
@@ -20,9 +15,8 @@ const Header = () => {
         <Wrapper>
             <Menu role="button" onClick={onMenuClick} />
             <Rightbar>
-                <Search onClick={onSearchClick} />
-                <Link href="/login">
-                    <Plus />
+                <Link href="/users/profile">
+                    <User />
                 </Link>
             </Rightbar>
         </Wrapper>
@@ -54,17 +48,7 @@ const Rightbar = styled.div`
     gap: 12px;
 `;
 
-const Search = styled(CiSearch)`
-    background-color: ${({ theme }) => theme.backgroundColor.white};
-    width: ${({ theme }) => theme.element.icon.width};
-    height: ${({ theme }) => theme.element.icon.height};
-
-    &:hover {
-        cursor: pointer;
-    }
-`;
-
-const Plus = styled(CiUser)`
+const User = styled(CiUser)`
     background-color: ${({ theme }) => theme.backgroundColor.white};
     width: ${({ theme }) => theme.element.icon.width};
     height: ${({ theme }) => theme.element.icon.height};

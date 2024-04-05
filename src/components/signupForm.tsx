@@ -6,6 +6,7 @@ import NaverLogin from "./naverLogin";
 import KakaoLogin from "./kakaoLogin";
 import GithubLogin from "./githubLogin";
 import { useMutation } from "@tanstack/react-query";
+import { ROUTE_MAP } from "@/utils/route";
 
 const SignupForm = () => {
     const [email, setEmail] = useState("");
@@ -45,8 +46,6 @@ const SignupForm = () => {
             }
         );
     };
-
-    console.log(data);
 
     return (
         <Wrapper>
@@ -95,11 +94,11 @@ const SignupForm = () => {
                 <LoginButton onClick={onSignupClick}>회원가입</LoginButton>
             </Form>
             <Container>
-                <Anchor href={"/login"}>로그인</Anchor>
+                <Anchor href={ROUTE_MAP["SIGNUP"]}>회원가입</Anchor>
                 <Divider />
-                <Anchor href={"/users/find-email"}>이메일 찾기</Anchor>
+                <Anchor href={ROUTE_MAP["FIND_EMAIL"]}>이메일 찾기</Anchor>
                 <Divider />
-                <Anchor href={"/users/find-password"}>비밀번호 찾기</Anchor>
+                <Anchor href={ROUTE_MAP["FIND_PASSWORD"]}>비밀번호 찾기</Anchor>
             </Container>
             <Container>
                 <GoogleLogin />

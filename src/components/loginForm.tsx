@@ -6,6 +6,7 @@ import GoogleLogin from "./googleLogin";
 import KakaoLogin from "./kakaoLogin";
 import GithubLogin from "./githubLogin";
 import { useMutation } from "@tanstack/react-query";
+import { ROUTE_MAP } from "@/utils/route";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
@@ -39,8 +40,6 @@ const LoginForm = () => {
         onLogin({ email, password });
     };
 
-    console.log(user);
-
     return (
         <Wrapper>
             <Title>로그인</Title>
@@ -68,11 +67,11 @@ const LoginForm = () => {
                 <LoginButton onClick={onLoginClick}>로그인</LoginButton>
             </Form>
             <Container>
-                <Anchor href={"/signup"}>회원가입</Anchor>
+                <Anchor href={ROUTE_MAP["SIGNUP"]}>회원가입</Anchor>
                 <Divider />
-                <Anchor href={"/users/find-email"}>이메일 찾기</Anchor>
+                <Anchor href={ROUTE_MAP["FIND_EMAIL"]}>이메일 찾기</Anchor>
                 <Divider />
-                <Anchor href={"/users/find-password"}>비밀번호 찾기</Anchor>
+                <Anchor href={ROUTE_MAP["FIND_PASSWORD"]}>비밀번호 찾기</Anchor>
             </Container>
             <Container>
                 <GoogleLogin />
@@ -89,11 +88,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 300px;
+    width: 100%;
+    height: 100%;
     padding: 18px;
     gap: 18px;
-    border: ${({ theme }) => theme.border.thin};
-    border-radius: ${({ theme }) => theme.borderRadius.small};
     background-color: ${({ theme }) => theme.backgroundColor.white};
 
     &:focus-within {
