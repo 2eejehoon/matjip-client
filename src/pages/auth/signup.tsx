@@ -1,4 +1,4 @@
-import SignupForm from "@/components/signupForm";
+import SignupForm from "@/components/auth/signupForm";
 import BaseLayout from "@/layouts/baseLayout";
 import { ReactElement } from "react";
 import { styled } from "styled-components";
