@@ -1,46 +1,26 @@
 import { ReactElement } from "react";
 import BaseLayout from "@/layouts/baseLayout";
-import PostsNavigation from "@/components/posts/postsNavigation";
+import CategoryNavigation from "@/components/posts/categoryNavigation";
 import usePostVideModeStore from "@/zustand/PostViewMode";
-import PostVideModeSwitchButton from "@/components/posts/PostViewModeSwitchButton";
+import PostViewModeSwitchButton from "@/components/posts/PostViewModeSwitchButton";
+import List from "@/components/posts/postList";
 
 const PostsPage = () => {
     const { viewMode } = usePostVideModeStore();
 
     return (
         <>
-            <PostsNavigation />
+            <CategoryNavigation />
             {(() => {
                 switch (viewMode) {
                     case "MAP":
-                        return <></>;
+                        return;
 
                     case "LIST":
-                        return (
-                            <>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                                <div style={{ height: "50px", backgroundColor: "red" }}></div>
-                            </>
-                        );
+                        return <List />;
                 }
             })()}
-            <PostVideModeSwitchButton />
+            <PostViewModeSwitchButton />
         </>
     );
 };

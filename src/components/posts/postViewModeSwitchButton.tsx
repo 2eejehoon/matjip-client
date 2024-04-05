@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import usePostVideModeStore from "@/zustand/PostViewMode";
 
-const PostVideModeSwitchButton = () => {
+const PostViewModeSwitchButton = () => {
     const { viewMode, setViewMode } = usePostVideModeStore();
 
     return (
@@ -49,4 +49,4 @@ const Button = styled.button`
     background-color: ${({ theme }) => theme.backgroundColor.black};
 `;
 
-export default PostVideModeSwitchButton;
+export default PostViewModeSwitchButton;

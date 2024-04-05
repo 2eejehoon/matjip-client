@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const PostsNavigation = () => {
+const CategoryNavigation = () => {
     return <StickyNavigation></StickyNavigation>;
 };
 
@@ -12,4 +12,4 @@ const StickyNavigation = styled.nav`
     background-color: ${({ theme }) => theme.backgroundColor.white};
 `;
 
-export default PostsNavigation;
+export default CategoryNavigation;

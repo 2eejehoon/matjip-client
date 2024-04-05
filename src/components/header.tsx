@@ -1,22 +1,20 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { useBottomSheetContext } from "./bottomSheet";
-import { CiMenuBurger, CiUser } from "react-icons/ci";
+import { CiUser, CiHome } from "react-icons/ci";
+import { ROUTE_MAP } from "@/utils/route";
 
 const Header = () => {
     const { setContentToBottomSheet, openBottomSheet } = useBottomSheetContext();
 
-    const onMenuClick = () => {
-        setContentToBottomSheet(<>메뉴</>);
-        openBottomSheet();
-    };
-
     return (
         <Wrapper>
-            <Menu role="button" onClick={onMenuClick} />
+            <Link href={ROUTE_MAP["HOME"]}>
+                <Home />
+            </Link>
             <Rightbar>
-                <Link href="/users/profile">
-                    <User />
+                <Link href={ROUTE_MAP["PROFILE"]}>
+                    <Profile />
                 </Link>
             </Rightbar>
         </Wrapper>
@@ -33,7 +31,7 @@ const Wrapper = styled.div`
     background-color: ${({ theme }) => theme.backgroundColor.white};
 `;
 
-const Menu = styled(CiMenuBurger)`
+const Home = styled(CiHome)`
     background-color: ${({ theme }) => theme.backgroundColor.white};
     width: ${({ theme }) => theme.element.icon.width};
     height: ${({ theme }) => theme.element.icon.height};
@@ -48,7 +46,7 @@ const Rightbar = styled.div`
     gap: 12px;
 `;
 
-const User = styled(CiUser)`
+const Profile = styled(CiUser)`
     background-color: ${({ theme }) => theme.backgroundColor.white};
     width: ${({ theme }) => theme.element.icon.width};
     height: ${({ theme }) => theme.element.icon.height};
