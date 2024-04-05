@@ -13,7 +13,7 @@ const SignupForm = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    const { data, mutate: onSignup } = useMutation({
+    const { data: user, mutate: onSignup } = useMutation({
         mutationKey: ["SIGNUP"],
         mutationFn: async (body: { email: string; name: string; password: string; passwordConfirm: string }) => {
             try {
@@ -46,6 +46,8 @@ const SignupForm = () => {
             }
         );
     };
+
+    console.log(user);
 
     return (
         <Wrapper>

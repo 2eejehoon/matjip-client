@@ -1,8 +1,11 @@
 import { ReactElement } from "react";
 import BaseLayout from "@/layouts/baseLayout";
+import Cookies from "js-cookie";
 
 const HomePage = () => {
-    return <>home</>;
+    const accessToken = Cookies.get("accessToken");
+    console.log(accessToken);
+    return <></>;
 };
 
 HomePage.getLayout = (page: ReactElement) => {

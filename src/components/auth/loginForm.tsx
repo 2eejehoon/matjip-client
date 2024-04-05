@@ -40,6 +40,8 @@ const LoginForm = () => {
         onLogin({ email, password });
     };
 
+    console.log(user);
+
     return (
         <Wrapper>
             <Title>로그인</Title>
