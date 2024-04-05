@@ -39,6 +39,8 @@ const StyledComponentsThemeProvider = ({ children }: StyledComponentsThemeProvid
             black: "#000000"
         },
 
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.19), 0 1px 1px rgba(0, 0, 0, 0.23)",
+
         element: {
             header: {
                 height: "80px"

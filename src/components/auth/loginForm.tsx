@@ -95,6 +95,7 @@ const Wrapper = styled.div`
     border: ${({ theme }) => theme.border.medium};
     border-radius: ${({ theme }) => theme.borderRadius.small};
     background-color: ${({ theme }) => theme.backgroundColor.white};
+    box-shadow: ${({ theme }) => theme.boxShadow};
 
     &:focus-within {
         border-color: black;

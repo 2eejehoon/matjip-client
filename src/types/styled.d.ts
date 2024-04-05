@@ -36,6 +36,8 @@ declare module "styled-components" {
             black: string;
         };
 
+        boxShadow: string;
+
         element: {
             header: {
                 height: string;

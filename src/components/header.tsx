@@ -48,9 +48,7 @@ const SearchContainer = styled.div`
     padding: 8px;
     border: ${({ theme }) => theme.border.thin};
     border-radius: ${({ theme }) => theme.borderRadius.large};
-    box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.19),
-        0 1px 1px rgba(0, 0, 0, 0.23);
+    box-shadow: ${({ theme }) => theme.boxShadow};
 
     &:focus-within {
         border-color: black;
