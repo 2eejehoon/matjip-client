@@ -94,7 +94,7 @@ const SignupForm = () => {
                 <LoginButton onClick={onSignupClick}>회원가입</LoginButton>
             </Form>
             <Container>
-                <Anchor href={ROUTE_MAP["SIGNUP"]}>회원가입</Anchor>
+                <Anchor href={ROUTE_MAP["LOGIN"]}>로그인</Anchor>
                 <Divider />
                 <Anchor href={ROUTE_MAP["FIND_EMAIL"]}>이메일 찾기</Anchor>
                 <Divider />
@@ -115,10 +115,9 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 300px;
     padding: 18px;
     gap: 18px;
-    border: ${({ theme }) => theme.border.thin};
+    border: ${({ theme }) => theme.border.medium};
     border-radius: ${({ theme }) => theme.borderRadius.small};
     background-color: ${({ theme }) => theme.backgroundColor.white};
 

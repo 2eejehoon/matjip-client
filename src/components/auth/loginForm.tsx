@@ -88,10 +88,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
     padding: 18px;
     gap: 18px;
+    border: ${({ theme }) => theme.border.medium};
+    border-radius: ${({ theme }) => theme.borderRadius.small};
     background-color: ${({ theme }) => theme.backgroundColor.white};
 
     &:focus-within {
