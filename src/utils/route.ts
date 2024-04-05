@@ -5,6 +5,7 @@ export const ROUTE_MAP = {
     POSTS: "/posts",
     POST_DETAIL: "/posts/",
     LOGIN: "/auth/login",
+    GOOGLE_LGOIN: "/auth/google",
     SIGNUP: "/auth/signup",
     PROFILE: "/users/profile",
     FIND_EMAIL: "/users/find-email",
