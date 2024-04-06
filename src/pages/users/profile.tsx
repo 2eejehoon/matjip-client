@@ -1,24 +1,51 @@
 import BaseLayout from "@/layouts/baseLayout";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
 import { GetServerSidePropsContext } from "next";
 import { ReactElement } from "react";
 import cookies from "next-cookies";
 import { ROUTE_MAP } from "@/utils/route";
 
-export const getServerSideProps = (context: GetServerSidePropsContext) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const cookieStore = cookies(context);
+    const accessToken = cookieStore.accessToken;
 
-    if (cookieStore.accessToken) {
+    if (!accessToken) {
         return {
-            props: {
-                accessToken: cookieStore.accessToken
+            redirect: {
+                destination: `${ROUTE_MAP["LOGIN"]}`
             }
         };
     }
 
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery({
+        queryKey: ["USER"],
+        queryFn: async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/profile`, {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error();
+                }
+
+                return response.json();
+            } catch (error) {
+                throw new Error();
+            }
+        }
+    });
+
     return {
-        redirect: {
-            destination: `${ROUTE_MAP["LOGIN"]}`
+        props: {
+            accessToken,
+            dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient)))
         }
     };
 };
@@ -31,26 +58,28 @@ const UserProfilePage = ({ accessToken }: UserProfilePageProps) => {
     const { data: user } = useQuery({
         queryKey: ["USER"],
         queryFn: async () => {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/profile`, {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
-                }
-            });
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/users/profile`, {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
 
-            if (!response.ok) {
+                if (!response.ok) {
+                    throw new Error();
+                }
+
+                return response.json();
+            } catch (error) {
                 throw new Error();
             }
-
-            return response.json();
         }
     });
 
-    console.log(user);
-
-    return <></>;
+    return <>{user}</>;
 };
 
 UserProfilePage.getLayout = (page: ReactElement) => {
