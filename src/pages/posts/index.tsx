@@ -1,12 +1,12 @@
 import { ReactElement } from "react";
 import BaseLayout from "@/layouts/baseLayout";
 import CategoryNavigation from "@/components/posts/categoryNavigation";
-import usePostVideModeStore from "@/zustand/PostViewMode";
-import PostViewModeSwitchButton from "@/components/posts/PostViewModeSwitchButton";
+import usePostViewModeStore from "@/zustand/postViewMode";
+import PostViewModeSwitchButton from "@/components/posts/postViewModeSwitchButton";
 import List from "@/components/posts/postList";
 
 const PostsPage = () => {
-    const { viewMode } = usePostVideModeStore();
+    const { viewMode } = usePostViewModeStore();
 
     return (
         <>

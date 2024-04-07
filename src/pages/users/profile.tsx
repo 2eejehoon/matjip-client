@@ -79,7 +79,9 @@ const UserProfilePage = ({ accessToken }: UserProfilePageProps) => {
         }
     });
 
-    return <>{user}</>;
+    console.log(user);
+
+    return <></>;
 };
 
 UserProfilePage.getLayout = (page: ReactElement) => {
