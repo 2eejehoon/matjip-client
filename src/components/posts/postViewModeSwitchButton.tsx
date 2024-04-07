@@ -1,40 +1,22 @@
 import styled from "styled-components";
-import usePostVideModeStore from "@/zustand/PostViewMode";
+import usePostViewModeStore from "@/zustand/postViewMode";
 
 const PostViewModeSwitchButton = () => {
-    const { viewMode, setViewMode } = usePostVideModeStore();
+    const { viewMode, setViewMode } = usePostViewModeStore();
 
-    return (
-        <Wrapper>
-            {(() => {
-                switch (viewMode) {
-                    case "LIST":
-                        return <Button onClick={() => setViewMode("MAP")}>지도 보기</Button>;
+    if (viewMode === "LIST") {
+        return <Button onClick={() => setViewMode("MAP")}>지도 보기</Button>;
+    }
 
-                    case "MAP":
-                        return <Button onClick={() => setViewMode("LIST")}>목록 보기</Button>;
-
-                    default:
-                        return null;
-                }
-            })()}
-        </Wrapper>
-    );
+    if (viewMode === "MAP") {
+        return <Button onClick={() => setViewMode("LIST")}>목록 보기</Button>;
+    }
 };
 
-const Wrapper = styled.div`
-    position: fixed;
-    bottom: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    z-index: 1;
-    background-color: transparent;
-`;
-
 const Button = styled.button`
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
