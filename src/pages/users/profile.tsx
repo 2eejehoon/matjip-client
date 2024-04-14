@@ -4,6 +4,8 @@ import { GetServerSidePropsContext } from "next";
 import { ReactElement } from "react";
 import cookies from "next-cookies";
 import { ROUTE_MAP } from "@/utils/route";
+import UserNavigation from "@/components/users/userNavigation";
+import UserProfile from "@/components/users/userProfile";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const cookieStore = cookies(context);
@@ -81,7 +83,12 @@ const UserProfilePage = ({ accessToken }: UserProfilePageProps) => {
 
     console.log(user);
 
-    return <></>;
+    return (
+        <>
+            <UserNavigation />
+            <UserProfile />
+        </>
+    );
 };
 
 UserProfilePage.getLayout = (page: ReactElement) => {
