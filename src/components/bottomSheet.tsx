@@ -1,19 +1,17 @@
 import { PropsWithChildren, ReactNode, createContext, useContext, useState } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
+import Portal from "./portal";
 
 export const BottomSheetContext = createContext({
     isBottomSheetOpen: false,
     openBottomSheet: () => {},
     closeBottomSheet: () => {},
-    bottomSheetContent: null as ReactNode,
-    setContentToBottomSheet: (component: ReactNode) => {},
     animate: {}
 });
 
 export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-    const [bottomSheetContent, setBottomSheetContent] = useState<ReactNode>(null);
     const animate = useAnimation();
 
     const openBottomSheet = () => {
@@ -26,23 +24,16 @@ export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
         setIsBottomSheetOpen(false);
     };
 
-    const setContentToBottomSheet = (component: ReactNode) => {
-        setBottomSheetContent(component);
-    };
-
     return (
         <BottomSheetContext.Provider
             value={{
                 isBottomSheetOpen,
                 openBottomSheet,
                 closeBottomSheet,
-                bottomSheetContent,
-                setContentToBottomSheet,
                 animate
             }}
         >
             {children}
-            <BottomSheet />
         </BottomSheetContext.Provider>
     );
 };
@@ -51,20 +42,24 @@ export const useBottomSheetContext = () => {
     return useContext(BottomSheetContext);
 };
 
-const BottomSheet = () => {
-    const { isBottomSheetOpen, bottomSheetContent, animate, closeBottomSheet } = useBottomSheetContext();
+type BottomSheetProps = PropsWithChildren & {};
+
+const BottomSheet = ({ children }: BottomSheetProps) => {
+    const { isBottomSheetOpen, animate, closeBottomSheet } = useBottomSheetContext();
 
     return (
         <>
-            <Wrapper
-                initial="hidden"
-                animate={animate}
-                variants={{ visible: { y: "0" }, hidden: { y: "100%" } }}
-                transition={{ type: "spring", damping: 50, stiffness: 500 }}
-            >
-                <Handle />
-                {bottomSheetContent}
-            </Wrapper>
+            <Portal>
+                <Wrapper
+                    initial="hidden"
+                    animate={animate}
+                    variants={{ visible: { y: "0" }, hidden: { y: "100%" } }}
+                    transition={{ type: "spring", damping: 50, stiffness: 500 }}
+                >
+                    <Handle />
+                    {children}
+                </Wrapper>
+            </Portal>
             {isBottomSheetOpen && <Overlay onClick={closeBottomSheet} />}
         </>
     );
@@ -105,3 +100,5 @@ const Handle = styled.div`
     margin-right: auto;
     background-color: lightgray;
 `;
+
+export default BottomSheet;

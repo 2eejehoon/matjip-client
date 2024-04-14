@@ -2,17 +2,21 @@ import Link from "next/link";
 import styled from "styled-components";
 import { CiUser, CiHome, CiSearch } from "react-icons/ci";
 import { ROUTE_MAP } from "@/utils/route";
+import BottomSheet, { useBottomSheetContext } from "./bottomSheet";
 
 const Header = () => {
+    const { openBottomSheet } = useBottomSheetContext();
+
     return (
         <Wrapper>
             <Link href={ROUTE_MAP["HOME"]}>
                 <Home />
             </Link>
-            <SearchContainer>
+            <SearchContainer onClick={openBottomSheet}>
                 <Search />
                 <SearchInput placeholder="맛집을 검색해보세요." />
             </SearchContainer>
+            <BottomSheet>123</BottomSheet>
             <Link href={ROUTE_MAP["PROFILE"]}>
                 <Profile />
             </Link>
