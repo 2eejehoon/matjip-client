@@ -1,16 +1,15 @@
-import { PropsWithChildren, useEffect, useRef } from "react";
+import { PropsWithChildren, ReactNode, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 
-const MIN_HEIGHT = 300;
-const MAX_HEIGHT = 700;
-const SNAP = 70;
-
 type BottomSheetProps = PropsWithChildren & {
     isOpen: boolean;
+    defaultHeight?: number;
+    expandedHeight?: number;
+    snap?: number;
 };
 
-const BottomSheet = ({ children, isOpen }: BottomSheetProps) => {
+const BottomSheet = ({ children, isOpen, defaultHeight = 300, expandedHeight = 700, snap = 70 }: BottomSheetProps) => {
     const animate = useAnimation();
     const bottomSheetRef = useRef<HTMLDivElement>(null);
     const touchRef = useRef({
@@ -24,7 +23,7 @@ const BottomSheet = ({ children, isOpen }: BottomSheetProps) => {
             animate.start("show");
             bottomSheetStateRef.current = "visible";
             if (bottomSheetRef.current) {
-                bottomSheetRef.current.style.height = `${MIN_HEIGHT}px`;
+                bottomSheetRef.current.style.height = `${defaultHeight}px`;
             }
             document.body.style.overflow = "hidden";
         } else {
@@ -32,7 +31,7 @@ const BottomSheet = ({ children, isOpen }: BottomSheetProps) => {
             bottomSheetStateRef.current = "hidden";
             document.body.style.overflow = "auto";
         }
-    }, [isOpen, animate]);
+    }, [isOpen]);
 
     useEffect(() => {
         if (!bottomSheetRef.current) {
@@ -55,10 +54,13 @@ const BottomSheet = ({ children, isOpen }: BottomSheetProps) => {
             touchRef.current.endY = e.changedTouches[0].clientY;
             bottomSheetDiv.style.setProperty("transition", "height 0.2s linear");
 
-            if (touchRef.current.startY - touchRef.current.endY > SNAP) {
+            const isNeedExpand = touchRef.current.startY - touchRef.current.endY > snap;
+            const isNeedShrink = touchRef.current.endY - touchRef.current.startY > snap;
+
+            if (isNeedExpand) {
                 bottomSheetStateRef.current = "expanded";
-                bottomSheetDiv.style.height = `${MAX_HEIGHT}px`;
-            } else if (touchRef.current.endY - touchRef.current.startY > SNAP) {
+                bottomSheetDiv.style.height = `${expandedHeight}px`;
+            } else if (isNeedShrink) {
                 if (bottomSheetStateRef.current === "visible") {
                     bottomSheetStateRef.current = "hidden";
                     animate.start("hide");
@@ -66,15 +68,15 @@ const BottomSheet = ({ children, isOpen }: BottomSheetProps) => {
 
                 if (bottomSheetStateRef.current === "expanded") {
                     bottomSheetStateRef.current = "visible";
-                    bottomSheetDiv.style.height = `${MIN_HEIGHT}px`;
+                    bottomSheetDiv.style.height = `${defaultHeight}px`;
                 }
             } else {
                 if (bottomSheetStateRef.current === "visible") {
-                    bottomSheetDiv.style.height = `${MIN_HEIGHT}px`;
+                    bottomSheetDiv.style.height = `${defaultHeight}px`;
                 }
 
                 if (bottomSheetStateRef.current === "expanded") {
-                    bottomSheetDiv.style.height = `${MAX_HEIGHT}px`;
+                    bottomSheetDiv.style.height = `${expandedHeight}px`;
                 }
             }
 
@@ -115,12 +117,23 @@ const _BottomSheet = styled(motion.div)`
     width: 100%;
     border: ${({ theme }) => theme.border.thin};
     background-color: ${({ theme }) => theme.backgroundColor.white};
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 `;
 
-const Header = () => {
+type HeaderProps = {
+    renderTitle?: () => ReactNode;
+};
+
+const Header = ({ renderTitle }: HeaderProps) => {
     return (
         <_Header>
             <Handle />
+            {renderTitle && renderTitle()}
         </_Header>
     );
 };
@@ -153,6 +166,7 @@ const _Overlay = styled.div`
     top: 0;
     bottom: 0;
     margin: auto;
+    background-color: black;
 `;
 
 BottomSheet.Header = Header;
