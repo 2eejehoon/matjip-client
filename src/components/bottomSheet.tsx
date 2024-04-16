@@ -39,78 +39,78 @@ type BottomSheetProps = PropsWithChildren & {
     snap?: number;
 };
 
-const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 540, snap = 70 }: BottomSheetProps) => {
+const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 600, snap = 70 }: BottomSheetProps) => {
     const { isOpen, close } = useBottomSheetContext();
     const animate = useAnimation();
-    const bottomSheetRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const touchRef = useRef({
         startY: 0,
         endY: 0
     });
-    const bottomSheetHeightRef = useRef(defaultHeight);
-    const bottomSheetStateRef = useRef<"hidden" | "default" | "expanded">("hidden");
+    const heightRef = useRef(defaultHeight);
+    const stateRef = useRef<"hidden" | "default" | "expanded">("hidden");
 
     useEffect(() => {
         if (isOpen) {
             animate.start("show");
-            bottomSheetStateRef.current = "default";
-            if (bottomSheetRef.current) {
-                bottomSheetRef.current.style.height = `${defaultHeight}px`;
+            stateRef.current = "default";
+            if (containerRef.current) {
+                containerRef.current.style.height = `${defaultHeight}px`;
             }
             document.body.style.overflow = "hidden";
         } else {
             animate.start("hide");
-            bottomSheetStateRef.current = "hidden";
+            stateRef.current = "hidden";
             document.body.style.overflow = "auto";
         }
     }, [isOpen]);
 
     useEffect(() => {
-        if (!bottomSheetRef.current) {
+        if (!containerRef.current) {
             return;
         }
 
-        const bottomSheetDiv = bottomSheetRef.current;
+        const container = containerRef.current;
 
         const onTouchMove = (e: TouchEvent) => {
             const diff = e.touches[0].clientY - touchRef.current.startY;
-            const newHeight = bottomSheetHeightRef.current - diff;
-            bottomSheetDiv.style.height = `${newHeight}px`;
+            const newHeight = heightRef.current - diff;
+            container.style.height = `${newHeight}px`;
         };
 
         const onTouchStart = (e: TouchEvent) => {
             touchRef.current.startY = e.touches[0].clientY;
-            bottomSheetDiv.style.removeProperty("transition");
-            bottomSheetHeightRef.current = bottomSheetDiv.clientHeight;
+            container.style.removeProperty("transition");
+            heightRef.current = container.clientHeight;
         };
 
         const onTouchEnd = (e: TouchEvent) => {
             touchRef.current.endY = e.changedTouches[0].clientY;
-            bottomSheetDiv.style.setProperty("transition", "height 0.2s linear");
+            container.style.setProperty("transition", "height 0.2s linear");
 
             const isNeedExpand = touchRef.current.startY - touchRef.current.endY > snap;
             const isNeedShrink = touchRef.current.endY - touchRef.current.startY > snap;
 
             if (isNeedExpand) {
-                bottomSheetStateRef.current = "expanded";
-                bottomSheetDiv.style.height = `${expandedHeight}px`;
+                stateRef.current = "expanded";
+                container.style.height = `${expandedHeight}px`;
             } else if (isNeedShrink) {
-                if (bottomSheetStateRef.current === "default") {
-                    bottomSheetStateRef.current = "hidden";
+                if (stateRef.current === "default") {
+                    stateRef.current = "hidden";
                     close();
                 }
 
-                if (bottomSheetStateRef.current === "expanded") {
-                    bottomSheetStateRef.current = "default";
-                    bottomSheetDiv.style.height = `${defaultHeight}px`;
+                if (stateRef.current === "expanded") {
+                    stateRef.current = "default";
+                    container.style.height = `${defaultHeight}px`;
                 }
             } else {
-                if (bottomSheetStateRef.current === "default") {
-                    bottomSheetDiv.style.height = `${defaultHeight}px`;
+                if (stateRef.current === "default") {
+                    container.style.height = `${defaultHeight}px`;
                 }
 
-                if (bottomSheetStateRef.current === "expanded") {
-                    bottomSheetDiv.style.height = `${expandedHeight}px`;
+                if (stateRef.current === "expanded") {
+                    container.style.height = `${expandedHeight}px`;
                 }
             }
 
@@ -118,27 +118,30 @@ const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 540, snap
             touchRef.current.endY = 0;
         };
 
-        bottomSheetDiv.addEventListener("touchmove", onTouchMove);
-        bottomSheetDiv.addEventListener("touchstart", onTouchStart);
-        bottomSheetDiv.addEventListener("touchend", onTouchEnd);
+        container.addEventListener("touchmove", onTouchMove);
+        container.addEventListener("touchstart", onTouchStart);
+        container.addEventListener("touchend", onTouchEnd);
 
         return () => {
-            bottomSheetDiv.removeEventListener("touchmove", onTouchMove);
-            bottomSheetDiv.removeEventListener("touchstart", onTouchStart);
-            bottomSheetDiv.removeEventListener("touchend", onTouchEnd);
+            container.removeEventListener("touchmove", onTouchMove);
+            container.removeEventListener("touchstart", onTouchStart);
+            container.removeEventListener("touchend", onTouchEnd);
         };
     }, []);
 
     return (
-        <_BottomSheet
-            ref={bottomSheetRef}
-            initial="hidden"
-            animate={animate}
-            variants={{ show: { y: "0" }, hide: { y: "100%" } }}
-            transition={{ type: "spring", damping: 50, stiffness: 500 }}
-        >
-            {children}
-        </_BottomSheet>
+        <>
+            <_BottomSheet
+                ref={containerRef}
+                initial="hidden"
+                animate={animate}
+                variants={{ show: { y: "0" }, hide: { y: "100%" } }}
+                transition={{ type: "spring", damping: 50, stiffness: 500 }}
+            >
+                {children}
+            </_BottomSheet>
+            {isOpen && <Overlay onClick={close} />}
+        </>
     );
 };
 
@@ -150,6 +153,7 @@ const _BottomSheet = styled(motion.div)`
     border-radius: 16px 16px 0 0;
     width: 100%;
     border: ${({ theme }) => theme.border.thin};
+    z-index: 1;
     background-color: ${({ theme }) => theme.backgroundColor.white};
     overflow-y: scroll;
     &::-webkit-scrollbar {
@@ -159,15 +163,13 @@ const _BottomSheet = styled(motion.div)`
     scrollbar-width: none;
 `;
 
-const _Overlay = styled.div`
-    left: 0;
-    right: 0;
+const Overlay = styled.div`
+    position: fixed;
     top: 0;
     bottom: 0;
-    width: 100%;
-    height: 100%;
+    left: 0;
+    right: 0;
     margin: auto;
-    background-color: black;
 `;
 
 type HeaderProps = {
