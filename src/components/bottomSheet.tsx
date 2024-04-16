@@ -40,7 +40,7 @@ type BottomSheetProps = PropsWithChildren & {
 };
 
 const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 540, snap = 70 }: BottomSheetProps) => {
-    const { isOpen } = useBottomSheetContext();
+    const { isOpen, close } = useBottomSheetContext();
     const animate = useAnimation();
     const bottomSheetRef = useRef<HTMLDivElement>(null);
     const touchRef = useRef({
@@ -48,12 +48,12 @@ const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 540, snap
         endY: 0
     });
     const bottomSheetHeightRef = useRef(defaultHeight);
-    const bottomSheetStateRef = useRef<"hidden" | "visible" | "expanded">("hidden");
+    const bottomSheetStateRef = useRef<"hidden" | "default" | "expanded">("hidden");
 
     useEffect(() => {
         if (isOpen) {
             animate.start("show");
-            bottomSheetStateRef.current = "visible";
+            bottomSheetStateRef.current = "default";
             if (bottomSheetRef.current) {
                 bottomSheetRef.current.style.height = `${defaultHeight}px`;
             }
@@ -95,17 +95,17 @@ const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 540, snap
                 bottomSheetStateRef.current = "expanded";
                 bottomSheetDiv.style.height = `${expandedHeight}px`;
             } else if (isNeedShrink) {
-                if (bottomSheetStateRef.current === "visible") {
+                if (bottomSheetStateRef.current === "default") {
                     bottomSheetStateRef.current = "hidden";
-                    animate.start("hide");
+                    close();
                 }
 
                 if (bottomSheetStateRef.current === "expanded") {
-                    bottomSheetStateRef.current = "visible";
+                    bottomSheetStateRef.current = "default";
                     bottomSheetDiv.style.height = `${defaultHeight}px`;
                 }
             } else {
-                if (bottomSheetStateRef.current === "visible") {
+                if (bottomSheetStateRef.current === "default") {
                     bottomSheetDiv.style.height = `${defaultHeight}px`;
                 }
 
