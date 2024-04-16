@@ -1,50 +1,34 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import BaseLayout from "@/layouts/baseLayout";
-import BottomSheet from "@/components/bottomSheet";
+import BottomSheet, { useBottomSheetContext } from "@/components/bottomSheet";
 
 const HomePage = () => {
-    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+    const { open, toggle, isOpen, close } = useBottomSheetContext();
 
     return (
         <>
-            <button onClick={() => setIsBottomSheetOpen((prev) => !prev)}>123</button>
-            <BottomSheet isOpen={isBottomSheetOpen}>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
-                <div>123</div>
+            <button onClick={toggle}>123</button>
+            <BottomSheet>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>12</div>
+                <div>13</div>
+                <div>14</div>
+                <div>15</div>
+                <div>16</div>
+                <div>17</div>
+                <div>18</div>
+                <div>19</div>
+                <div>20</div>
             </BottomSheet>
         </>
     );

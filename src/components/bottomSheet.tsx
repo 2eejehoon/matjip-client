@@ -1,21 +1,53 @@
-import { PropsWithChildren, ReactNode, useEffect, useRef } from "react";
+import { PropsWithChildren, ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 
+const BottomSheetContext = createContext({
+    isOpen: false,
+    open: () => {},
+    close: () => {},
+    toggle: () => {}
+});
+
+export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const open = () => {
+        setIsOpen(true);
+    };
+
+    const close = () => {
+        setIsOpen(false);
+    };
+
+    const toggle = () => {
+        setIsOpen((prev) => !prev);
+    };
+
+    return (
+        <BottomSheetContext.Provider value={{ isOpen, open, close, toggle }}>{children}</BottomSheetContext.Provider>
+    );
+};
+
+export const useBottomSheetContext = () => {
+    return useContext(BottomSheetContext);
+};
+
 type BottomSheetProps = PropsWithChildren & {
-    isOpen: boolean;
     defaultHeight?: number;
     expandedHeight?: number;
     snap?: number;
 };
 
-const BottomSheet = ({ children, isOpen, defaultHeight = 300, expandedHeight = 700, snap = 70 }: BottomSheetProps) => {
+const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 540, snap = 70 }: BottomSheetProps) => {
+    const { isOpen } = useBottomSheetContext();
     const animate = useAnimation();
     const bottomSheetRef = useRef<HTMLDivElement>(null);
     const touchRef = useRef({
         startY: 0,
         endY: 0
     });
+    const bottomSheetHeightRef = useRef(defaultHeight);
     const bottomSheetStateRef = useRef<"hidden" | "visible" | "expanded">("hidden");
 
     useEffect(() => {
@@ -41,13 +73,15 @@ const BottomSheet = ({ children, isOpen, defaultHeight = 300, expandedHeight = 7
         const bottomSheetDiv = bottomSheetRef.current;
 
         const onTouchMove = (e: TouchEvent) => {
-            const newHeight = window.innerHeight - e.touches[0].clientY;
+            const diff = e.touches[0].clientY - touchRef.current.startY;
+            const newHeight = bottomSheetHeightRef.current - diff;
             bottomSheetDiv.style.height = `${newHeight}px`;
         };
 
         const onTouchStart = (e: TouchEvent) => {
             touchRef.current.startY = e.touches[0].clientY;
             bottomSheetDiv.style.removeProperty("transition");
+            bottomSheetHeightRef.current = bottomSheetDiv.clientHeight;
         };
 
         const onTouchEnd = (e: TouchEvent) => {
@@ -125,6 +159,17 @@ const _BottomSheet = styled(motion.div)`
     scrollbar-width: none;
 `;
 
+const _Overlay = styled.div`
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    background-color: black;
+`;
+
 type HeaderProps = {
     renderTitle?: () => ReactNode;
 };
@@ -152,24 +197,6 @@ const Handle = styled.div`
     background-color: lightgray;
 `;
 
-type OverlayProps = {
-    close: () => void;
-};
-
-const Overlay = ({ close }: OverlayProps) => {
-    return <_Overlay onClick={close} />;
-};
-
-const _Overlay = styled.div`
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    background-color: black;
-`;
-
 BottomSheet.Header = Header;
-BottomSheet.Overlay = Overlay;
 
 export default BottomSheet;

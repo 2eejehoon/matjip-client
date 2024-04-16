@@ -5,6 +5,7 @@ import StyledComponentsThemeProvider from "@/styles/themeProvider";
 import { ReactElement, ReactNode, useState } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BottomSheetProvider } from "@/components/bottomSheet";
 
 type MatjipProps = AppProps & {
     Component: NextPage & { getLayout: (page: ReactElement) => ReactNode };
@@ -17,7 +18,9 @@ export default function App({ Component, pageProps }: MatjipProps) {
     return (
         <StyledComponentsThemeProvider>
             <GlobalStyle />
-            <QueryClientProvider client={queryClient}>{getLayout(<Component {...pageProps} />)}</QueryClientProvider>
+            <QueryClientProvider client={queryClient}>
+                <BottomSheetProvider>{getLayout(<Component {...pageProps} />)}</BottomSheetProvider>
+            </QueryClientProvider>
         </StyledComponentsThemeProvider>
     );
 }
