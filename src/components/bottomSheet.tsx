@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 
@@ -37,9 +37,20 @@ type BottomSheetProps = PropsWithChildren & {
     defaultHeight?: number;
     expandedHeight?: number;
     snap?: number;
+    withHandle?: boolean;
+    title?: string;
+    closeText?: string;
 };
 
-const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 600, snap = 70 }: BottomSheetProps) => {
+const BottomSheet = ({
+    children,
+    defaultHeight = 300,
+    expandedHeight = 600,
+    snap = 70,
+    withHandle,
+    title,
+    closeText
+}: BottomSheetProps) => {
     const { isOpen, close } = useBottomSheetContext();
     const animate = useAnimation();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -54,10 +65,8 @@ const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 600, snap
         if (isOpen) {
             animate.start("show");
             stateRef.current = "default";
-            if (containerRef.current) {
-                containerRef.current.style.height = `${defaultHeight}px`;
-            }
             document.body.style.overflow = "hidden";
+            containerRef.current!.style.height = `${defaultHeight}px`;
         } else {
             animate.start("hide");
             stateRef.current = "hidden";
@@ -80,8 +89,8 @@ const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 600, snap
 
         const onTouchStart = (e: TouchEvent) => {
             touchRef.current.startY = e.touches[0].clientY;
-            container.style.removeProperty("transition");
             heightRef.current = container.clientHeight;
+            container.style.removeProperty("transition");
         };
 
         const onTouchEnd = (e: TouchEvent) => {
@@ -138,7 +147,9 @@ const BottomSheet = ({ children, defaultHeight = 300, expandedHeight = 600, snap
                 variants={{ show: { y: "0" }, hide: { y: "100%" } }}
                 transition={{ type: "spring", damping: 50, stiffness: 500 }}
             >
-                {children}
+                {withHandle && <Handle />}
+                <Header title={title} closeText={closeText} />
+                <Content>{children}</Content>
             </_BottomSheet>
             {isOpen && <Overlay onClick={close} />}
         </>
@@ -155,12 +166,6 @@ const _BottomSheet = styled(motion.div)`
     border: ${({ theme }) => theme.border.thin};
     z-index: 1;
     background-color: ${({ theme }) => theme.backgroundColor.white};
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 `;
 
 const Overlay = styled.div`
@@ -172,33 +177,69 @@ const Overlay = styled.div`
     margin: auto;
 `;
 
-type HeaderProps = {
-    renderTitle?: () => ReactNode;
-};
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+`;
 
-const Header = ({ renderTitle }: HeaderProps) => {
+const Handle = () => {
     return (
-        <_Header>
-            <Handle />
-            {renderTitle && renderTitle()}
-        </_Header>
+        <_Handle>
+            <Handlebar />
+        </_Handle>
     );
 };
 
-const _Header = styled.div`
+const _Handle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 8px 0 8px 0;
 `;
 
-const Handle = styled.div`
+const Handlebar = styled.div`
     width: 20%;
     height: 4px;
     border-radius: 4px;
     background-color: lightgray;
 `;
 
-BottomSheet.Header = Header;
+type HeaderProps = {
+    title?: string;
+    closeText?: string;
+};
+
+const Header = ({ title, closeText }: HeaderProps) => {
+    const { close } = useBottomSheetContext();
+
+    return (
+        <_Header>
+            {title && <Title>{title}</Title>}
+            {closeText && <Close onClick={close}>{closeText}</Close>}
+        </_Header>
+    );
+};
+
+const _Header = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+`;
+
+const Title = styled.span`
+    color: ${({ theme }) => theme.color.black};
+    font-size: ${({ theme }) => theme.fontSize.medium};
+    font-weight: ${({ theme }) => theme.fontWeight.normal};
+`;
+
+const Close = styled.span`
+    position: absolute;
+    right: 12px;
+    color: ${({ theme }) => theme.color.black};
+    font-size: ${({ theme }) => theme.fontSize.medium};
+    font-weight: ${({ theme }) => theme.fontWeight.normal};
+`;
 
 export default BottomSheet;

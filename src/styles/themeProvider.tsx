@@ -13,8 +13,8 @@ const StyledComponentsThemeProvider = ({ children }: StyledComponentsThemeProvid
 
         fontSize: {
             small: "12px",
-            medium: "14px",
-            large: "16px"
+            medium: "16px",
+            large: "20px"
         },
 
         fontWeight: {

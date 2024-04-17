@@ -3,12 +3,12 @@ import BaseLayout from "@/layouts/baseLayout";
 import BottomSheet, { useBottomSheetContext } from "@/components/bottomSheet";
 
 const HomePage = () => {
-    const { open, toggle, isOpen, close } = useBottomSheetContext();
+    const { toggle } = useBottomSheetContext();
 
     return (
         <>
             <button onClick={toggle}>123</button>
-            <BottomSheet>
+            <BottomSheet withHandle title="제목" closeText="완료">
                 <div>1</div>
                 <div>2</div>
                 <div>3</div>
