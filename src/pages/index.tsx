@@ -7,28 +7,9 @@ const HomePage = () => {
 
     return (
         <>
-            <button onClick={toggle}>123</button>
-            <BottomSheet withHandle title="제목" closeText="완료">
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-                <div>5</div>
-                <div>6</div>
-                <div>7</div>
-                <div>8</div>
-                <div>9</div>
-                <div>10</div>
-                <div>11</div>
-                <div>12</div>
-                <div>13</div>
-                <div>14</div>
-                <div>15</div>
-                <div>16</div>
-                <div>17</div>
-                <div>18</div>
-                <div>19</div>
-                <div>20</div>
+            <button onClick={toggle}>토글 버튼</button>
+            <BottomSheet renderHeader={() => <div style={{ backgroundColor: "orange" }}>나는 헤더야</div>}>
+                <div style={{ height: "700px", backgroundColor: "pink" }}>나는 컨텐츠야</div>
             </BottomSheet>
         </>
     );

@@ -1,4 +1,14 @@
-import { PropsWithChildren, createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+    ForwardedRef,
+    PropsWithChildren,
+    ReactNode,
+    createContext,
+    forwardRef,
+    useContext,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 
@@ -37,29 +47,27 @@ type BottomSheetProps = PropsWithChildren & {
     defaultHeight?: number;
     expandedHeight?: number;
     snap?: number;
-    withHandle?: boolean;
-    title?: string;
-    closeText?: string;
+    renderHeader?: () => ReactNode;
 };
 
 const BottomSheet = ({
     children,
     defaultHeight = 300,
     expandedHeight = 600,
-    snap = 70,
-    withHandle,
-    title,
-    closeText
+    snap = 100,
+    renderHeader
 }: BottomSheetProps) => {
     const { isOpen, close } = useBottomSheetContext();
     const animate = useAnimation();
     const containerRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
     const touchRef = useRef({
         startY: 0,
         endY: 0
     });
     const heightRef = useRef(defaultHeight);
-    const stateRef = useRef<"hidden" | "default" | "expanded">("hidden");
+    const stateRef = useRef<"default" | "expanded">("default");
 
     useEffect(() => {
         if (isOpen) {
@@ -69,17 +77,100 @@ const BottomSheet = ({
             containerRef.current!.style.height = `${defaultHeight}px`;
         } else {
             animate.start("hide");
-            stateRef.current = "hidden";
             document.body.style.overflow = "auto";
         }
     }, [isOpen]);
 
     useEffect(() => {
-        if (!containerRef.current) {
+        if (!containerRef.current || !contentRef.current) {
             return;
         }
 
         const container = containerRef.current;
+        const content = contentRef.current;
+
+        const onTouchMove = (e: TouchEvent) => {
+            if (content.scrollTop > 0) {
+                return;
+            }
+            const diff = e.touches[0].clientY - touchRef.current.startY;
+            const newHeight = heightRef.current - diff;
+            container.style.height = `${newHeight}px`;
+        };
+
+        const onTouchStart = (e: TouchEvent) => {
+            if (content.scrollTop > 0) {
+                return;
+            }
+            touchRef.current.startY = e.touches[0].clientY;
+            heightRef.current = container.clientHeight;
+            container.style.removeProperty("transition");
+        };
+
+        const onTouchEnd = (e: TouchEvent) => {
+            if (content.scrollTop > 0) {
+                return;
+            }
+            touchRef.current.endY = e.changedTouches[0].clientY;
+            container.style.setProperty("transition", "height 0.2s linear");
+
+            const isUpsideSnap = touchRef.current.startY - touchRef.current.endY > snap;
+            const isDownsideSnap = touchRef.current.endY - touchRef.current.startY > snap;
+            const neither =
+                touchRef.current.startY - touchRef.current.endY <= snap &&
+                touchRef.current.endY - touchRef.current.startY <= snap;
+
+            if (isUpsideSnap && stateRef.current === "expanded") {
+                container.style.height = `${expandedHeight}px`;
+                return;
+            }
+
+            if (isDownsideSnap && stateRef.current === "expanded") {
+                stateRef.current = "default";
+                container.style.height = `${defaultHeight}px`;
+                return;
+            }
+
+            if (neither && stateRef.current === "expanded") {
+                container.style.height = `${expandedHeight}px`;
+                return;
+            }
+
+            if (isUpsideSnap && stateRef.current === "default") {
+                stateRef.current = "expanded";
+                container.style.height = `${expandedHeight}px`;
+                return;
+            }
+
+            if (isDownsideSnap && stateRef.current === "default") {
+                close();
+                return;
+            }
+
+            if (neither && stateRef.current === "default") {
+                container.style.height = `${defaultHeight}px`;
+                return;
+            }
+        };
+
+        content.addEventListener("touchmove", onTouchMove);
+        content.addEventListener("touchstart", onTouchStart);
+        content.addEventListener("touchend", onTouchEnd);
+
+        return () => {
+            content.removeEventListener("touchmove", onTouchMove);
+            content.removeEventListener("touchstart", onTouchStart);
+            content.removeEventListener("touchend", onTouchEnd);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!headerRef.current || !containerRef.current) {
+            return;
+        }
+
+        const container = containerRef.current;
+        const header = headerRef.current;
 
         const onTouchMove = (e: TouchEvent) => {
             const diff = e.touches[0].clientY - touchRef.current.startY;
@@ -97,44 +188,53 @@ const BottomSheet = ({
             touchRef.current.endY = e.changedTouches[0].clientY;
             container.style.setProperty("transition", "height 0.2s linear");
 
-            const isNeedExpand = touchRef.current.startY - touchRef.current.endY > snap;
-            const isNeedShrink = touchRef.current.endY - touchRef.current.startY > snap;
+            const isUpsideSnap = touchRef.current.startY - touchRef.current.endY > snap;
+            const isDownsideSnap = touchRef.current.endY - touchRef.current.startY > snap;
+            const neither =
+                touchRef.current.startY - touchRef.current.endY <= snap &&
+                touchRef.current.endY - touchRef.current.startY <= snap;
 
-            if (isNeedExpand) {
-                stateRef.current = "expanded";
+            if (isUpsideSnap && stateRef.current === "expanded") {
                 container.style.height = `${expandedHeight}px`;
-            } else if (isNeedShrink) {
-                if (stateRef.current === "default") {
-                    stateRef.current = "hidden";
-                    close();
-                }
-
-                if (stateRef.current === "expanded") {
-                    stateRef.current = "default";
-                    container.style.height = `${defaultHeight}px`;
-                }
-            } else {
-                if (stateRef.current === "default") {
-                    container.style.height = `${defaultHeight}px`;
-                }
-
-                if (stateRef.current === "expanded") {
-                    container.style.height = `${expandedHeight}px`;
-                }
+                return;
             }
 
-            touchRef.current.startY = 0;
-            touchRef.current.endY = 0;
+            if (isDownsideSnap && stateRef.current === "expanded") {
+                stateRef.current = "default";
+                container.style.height = `${defaultHeight}px`;
+                return;
+            }
+
+            if (neither && stateRef.current === "expanded") {
+                container.style.height = `${expandedHeight}px`;
+                return;
+            }
+
+            if (isUpsideSnap && stateRef.current === "default") {
+                stateRef.current = "expanded";
+                container.style.height = `${expandedHeight}px`;
+                return;
+            }
+
+            if (isDownsideSnap && stateRef.current === "default") {
+                close();
+                return;
+            }
+
+            if (neither && stateRef.current === "default") {
+                container.style.height = `${defaultHeight}px`;
+                return;
+            }
         };
 
-        container.addEventListener("touchmove", onTouchMove);
-        container.addEventListener("touchstart", onTouchStart);
-        container.addEventListener("touchend", onTouchEnd);
+        header.addEventListener("touchmove", onTouchMove);
+        header.addEventListener("touchstart", onTouchStart);
+        header.addEventListener("touchend", onTouchEnd);
 
         return () => {
-            container.removeEventListener("touchmove", onTouchMove);
-            container.removeEventListener("touchstart", onTouchStart);
-            container.removeEventListener("touchend", onTouchEnd);
+            header.removeEventListener("touchmove", onTouchMove);
+            header.removeEventListener("touchstart", onTouchStart);
+            header.removeEventListener("touchend", onTouchEnd);
         };
     }, []);
 
@@ -147,9 +247,8 @@ const BottomSheet = ({
                 variants={{ show: { y: "0" }, hide: { y: "100%" } }}
                 transition={{ type: "spring", damping: 50, stiffness: 500 }}
             >
-                {withHandle && <Handle />}
-                <Header title={title} closeText={closeText} />
-                <Content>{children}</Content>
+                <Header ref={headerRef}>{renderHeader && renderHeader()}</Header>
+                <Content ref={contentRef}>{children}</Content>
             </_BottomSheet>
             {isOpen && <Overlay onClick={close} />}
         </>
@@ -161,10 +260,8 @@ const _BottomSheet = styled(motion.div)`
     flex-direction: column;
     position: fixed;
     bottom: 0;
-    border-radius: 16px 16px 0 0;
     width: 100%;
-    border: ${({ theme }) => theme.border.thin};
-    z-index: 1;
+    z-index: 10;
     background-color: ${({ theme }) => theme.backgroundColor.white};
 `;
 
@@ -177,69 +274,50 @@ const Overlay = styled.div`
     margin: auto;
 `;
 
-const Content = styled.div`
+type HeaderProps = PropsWithChildren & {};
+
+const Header = forwardRef(({ children }: HeaderProps, ref: ForwardedRef<HTMLDivElement>) => {
+    return (
+        <_Header ref={ref}>
+            <_HeaderBar>
+                <Bar />
+            </_HeaderBar>
+            {children}
+        </_Header>
+    );
+});
+
+Header.displayName = "Header";
+
+const _Header = styled.div`
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
 `;
 
-const Handle = () => {
-    return (
-        <_Handle>
-            <Handlebar />
-        </_Handle>
-    );
-};
-
-const _Handle = styled.div`
+const _HeaderBar = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    border-top: ${({ theme }) => theme.border.thin};
+    border-radius: 12px 12px 0 0;
     padding: 8px 0 8px 0;
 `;
 
-const Handlebar = styled.div`
+const Bar = styled.div`
     width: 20%;
     height: 4px;
     border-radius: 4px;
     background-color: lightgray;
 `;
 
-type HeaderProps = {
-    title?: string;
-    closeText?: string;
-};
+const Content = forwardRef(({ children }: PropsWithChildren, ref: ForwardedRef<HTMLDivElement>) => {
+    return <_Content ref={ref}>{children}</_Content>;
+});
 
-const Header = ({ title, closeText }: HeaderProps) => {
-    const { close } = useBottomSheetContext();
+Content.displayName = "Content";
 
-    return (
-        <_Header>
-            {title && <Title>{title}</Title>}
-            {closeText && <Close onClick={close}>{closeText}</Close>}
-        </_Header>
-    );
-};
-
-const _Header = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 12px;
-`;
-
-const Title = styled.span`
-    color: ${({ theme }) => theme.color.black};
-    font-size: ${({ theme }) => theme.fontSize.medium};
-    font-weight: ${({ theme }) => theme.fontWeight.normal};
-`;
-
-const Close = styled.span`
-    position: absolute;
-    right: 12px;
-    color: ${({ theme }) => theme.color.black};
-    font-size: ${({ theme }) => theme.fontSize.medium};
-    font-weight: ${({ theme }) => theme.fontWeight.normal};
+const _Content = styled.div`
+    overflow-y: scroll;
 `;
 
 export default BottomSheet;
