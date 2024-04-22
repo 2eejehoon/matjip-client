@@ -1,49 +1,10 @@
-import {
-    ForwardedRef,
-    PropsWithChildren,
-    ReactNode,
-    createContext,
-    forwardRef,
-    useContext,
-    useEffect,
-    useRef,
-    useState
-} from "react";
+import { ForwardedRef, PropsWithChildren, ReactNode, forwardRef, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 
-const BottomSheetContext = createContext({
-    isOpen: false,
-    open: () => {},
-    close: () => {},
-    toggle: () => {}
-});
-
-export const BottomSheetProvider = ({ children }: PropsWithChildren) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const open = () => {
-        setIsOpen(true);
-    };
-
-    const close = () => {
-        setIsOpen(false);
-    };
-
-    const toggle = () => {
-        setIsOpen((prev) => !prev);
-    };
-
-    return (
-        <BottomSheetContext.Provider value={{ isOpen, open, close, toggle }}>{children}</BottomSheetContext.Provider>
-    );
-};
-
-export const useBottomSheetContext = () => {
-    return useContext(BottomSheetContext);
-};
-
 type BottomSheetProps = PropsWithChildren & {
+    isOpen: boolean;
+    close: () => void;
     defaultHeight?: number;
     expandedHeight?: number;
     snap?: number;
@@ -52,12 +13,13 @@ type BottomSheetProps = PropsWithChildren & {
 
 const BottomSheet = ({
     children,
+    isOpen,
+    close,
     defaultHeight = 300,
     expandedHeight = 600,
     snap = 100,
     renderHeader
 }: BottomSheetProps) => {
-    const { isOpen, close } = useBottomSheetContext();
     const animate = useAnimation();
     const containerRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
@@ -66,8 +28,9 @@ const BottomSheet = ({
         startY: 0,
         endY: 0
     });
-    const heightRef = useRef(defaultHeight);
+    const heightRef = useRef<number>(defaultHeight);
     const stateRef = useRef<"default" | "expanded">("default");
+    const isScrollableRef = useRef<boolean>(false);
 
     useEffect(() => {
         if (isOpen) {
@@ -99,8 +62,7 @@ const BottomSheet = ({
         };
 
         const onTouchStart = (e: TouchEvent) => {
-            if (content.scrollTop > 0) {
-                return;
+            if (content.scrollTop === 0) {
             }
             touchRef.current.startY = e.touches[0].clientY;
             heightRef.current = container.clientHeight;
@@ -143,7 +105,7 @@ const BottomSheet = ({
             }
 
             if (isDownsideSnap && stateRef.current === "default") {
-                close();
+                animate.start("hide");
                 return;
             }
 
