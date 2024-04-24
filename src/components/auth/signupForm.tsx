@@ -5,49 +5,20 @@ import GoogleLogin from "./googleLogin";
 import NaverLogin from "./naverLogin";
 import KakaoLogin from "./kakaoLogin";
 import GithubLogin from "./githubLogin";
-import { useMutation } from "@tanstack/react-query";
 import { ROUTE_MAP } from "@/utils/route";
+import { useSignup } from "@/react-query/mutations/signup";
 
 const SignupForm = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
-    const { data: user, mutate: onSignup } = useMutation({
-        mutationKey: ["SIGNUP"],
-        mutationFn: async (body: { email: string; name: string; password: string; passwordConfirm: string }) => {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/signup`, {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                if (!response.ok) {
-                    throw new Error();
-                }
-
-                return response.json();
-            } catch (error) {
-                throw new Error();
-            }
-        }
-    });
+    const signup = useSignup();
 
     const onSignupClick = async (e: FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        onSignup(
-            { email, name, password, passwordConfirm },
-            {
-                onSuccess: () => window.location.replace("/login")
-            }
-        );
+        signup.mutate({ email, name, password, passwordConfirm });
     };
-
-    console.log(user);
 
     return (
         <Wrapper>
