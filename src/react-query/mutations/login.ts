@@ -20,7 +20,8 @@ export const useLogin = () => {
                 router.push("/");
             }
         },
-        onError: () => {
+        onError: (error) => {
+            console.log(error)
             delete Axios.defaults.headers.common["Authorization"];
             localStorage.removeItem("refreshToken");
         }
