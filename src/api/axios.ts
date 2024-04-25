@@ -1,5 +1,5 @@
 import axios from "axios";
-import { refreshToken } from "./auth";
+import { getAccessToken } from "./auth";
 
 const Axios = axios.create({
     baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -20,12 +20,17 @@ Axios.interceptors.response.use(
         return response;
     },
     async (error) => {
-        if (error.response && error.response.status === 401 && error.config._retry === false) {
+        if (error.response && error.response.status === 401 && !error.config._retry) {
             error.config._retry = true;
             try {
                 const refreshToken = localStorage.getItem("refreshToken");
-                Axios.defaults.headers.common["Authorization"] = `Bearer ${refreshToken}`;
-                return Axios(error.config);
+                if (refreshToken) {
+                    const { accessToken } = await getAccessToken(refreshToken);
+                    Axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+                    return Axios(error.config);
+                } else {
+                    window.location.replace("/auth/login");
+                }
             } catch (error) {
                 return Promise.reject(error);
             }

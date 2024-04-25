@@ -16,7 +16,8 @@ export const signup = async ({ email, name, password, passwordConfirm }: SignupD
     return data;
 };
 
-export const refreshToken = async (): Promise<Token> => {
+export const getAccessToken = async (refreshToken: string): Promise<Token> => {
+    Axios.defaults.headers.common["Authorization"] = `Bearer ${refreshToken}`;
     const { data } = await Axios.get<Token>("/auth/refreshToken");
 
     return data;

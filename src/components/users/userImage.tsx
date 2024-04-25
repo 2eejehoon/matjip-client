@@ -5,7 +5,7 @@ import { useGetUserProfile } from "@/react-query/queries/getUserProfile";
 
 const defaultImage = "/static/default.png";
 
-const UserProfile = () => {
+const UserImage = () => {
     const userProfile = useGetUserProfile();
     const inputRef = useRef<HTMLInputElement>(null);
     const imageSrc = userProfile.data?.photo
@@ -59,4 +59,4 @@ const ImageUploadInput = styled.input`
     display: none;
 `;
 
-export default UserProfile;
+export default UserImage;

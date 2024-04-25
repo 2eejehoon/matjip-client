@@ -1,9 +1,9 @@
 import BaseLayout from "@/layouts/baseLayout";
 import { ReactElement } from "react";
-import UserNavigation from "@/components/users/userNavigation";
-import UserProfile from "@/components/users/userProfile";
+import UserImage from "@/components/users/userImage";
 import { prefetchGetUserProfile } from "@/react-query/queries/getUserProfile";
 import { dehydrate } from "@tanstack/react-query";
+import UserInfo from "@/components/users/userInfo";
 
 export const getServerSideProps = async () => {
     const queryClient = prefetchGetUserProfile();
@@ -18,8 +18,8 @@ export const getServerSideProps = async () => {
 const UserProfilePage = () => {
     return (
         <>
-            <UserNavigation />
-            <UserProfile />
+            <UserImage />
+            <UserInfo />
         </>
     );
 };
