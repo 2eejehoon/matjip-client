@@ -11,8 +11,6 @@ export const useSignup = () => {
         onSuccess: () => {
             routeTo("LOGIN");
         },
-        onError: (error) => {
-            console.log(error);
-        }
+        onError: () => {}
     });
 };

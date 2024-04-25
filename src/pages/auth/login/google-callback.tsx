@@ -47,8 +47,6 @@ const GoogleCallbackPage = ({ accessToken }: GoogleCallbackPageProps) => {
             }
         }
     });
-
-    console.log(data);
 };
 
 GoogleCallbackPage.getLayout = (page: ReactElement) => {
