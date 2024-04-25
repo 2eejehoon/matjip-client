@@ -8,8 +8,8 @@ const UserNavigation = () => {
 
     return (
         <Wrapper>
-            <Link href={ROUTE_MAP["PROFILE"]}>
-                <Item $isActive={router.pathname === ROUTE_MAP["PROFILE"]}>유저 정보</Item>
+            <Link href={ROUTE_MAP["USERS_PROFILE"]}>
+                <Item $isActive={router.pathname === ROUTE_MAP["USERS_PROFILE"]}>유저 정보</Item>
             </Link>
         </Wrapper>
     );
