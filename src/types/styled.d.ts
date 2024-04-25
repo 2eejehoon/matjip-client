@@ -39,7 +39,7 @@ declare module "styled-components" {
         boxShadow: string;
 
         element: {
-            header: {
+            footer: {
                 height: string;
             };
             nav: {

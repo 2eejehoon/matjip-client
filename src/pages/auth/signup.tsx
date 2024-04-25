@@ -15,7 +15,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - ${({ theme }) => theme.element.header.height});
+    height: calc(100vh - ${({ theme }) => theme.element.footer.height});
 `;
 
 SignupPage.getLayout = (page: ReactElement) => {

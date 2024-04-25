@@ -1,12 +1,12 @@
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
-import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 const BaseLayout = ({ children }: PropsWithChildren) => {
     return (
         <Page>
-            <Header />
             <Main>{children}</Main>
+            <Footer />
         </Page>
     );
 };
@@ -14,7 +14,7 @@ const BaseLayout = ({ children }: PropsWithChildren) => {
 const Page = styled.div``;
 
 const Main = styled.main`
-    min-height: calc(100% - ${({ theme }) => theme.element.header.height});
+    min-height: calc(100% - ${({ theme }) => theme.element.footer.height});
 `;
 
 export default BaseLayout;
