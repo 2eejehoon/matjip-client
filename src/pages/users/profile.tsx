@@ -1,10 +1,8 @@
 import BaseLayout from "@/layouts/baseLayout";
 import { ReactElement } from "react";
-import UserImage from "@/components/users/userImage";
-import { prefetchGetUserProfile } from "@/react-query/queries/getUserProfile";
+import UserProfile from "@/components/users/userProfile";
+import { prefetchGetUserProfile } from "@/react-query/queries/getProfile";
 import { dehydrate } from "@tanstack/react-query";
-import UserInfo from "@/components/users/userInfo";
-import UserLogoutButton from "@/components/users/userLogoutButton";
 import styled from "styled-components";
 
 export const getServerSideProps = async () => {
@@ -20,18 +18,16 @@ export const getServerSideProps = async () => {
 const UserProfilePage = () => {
     return (
         <Wrapper>
-            <UserImage />
-            <UserInfo />
-            <UserLogoutButton />
+            <UserProfile />
         </Wrapper>
     );
 };
 
 const Wrapper = styled.div`
+    min-height: calc(100vh - ${({ theme }) => theme.element.footer.height});
     display: flex;
-    flex-direction: column;
-    padding: 12px;
-    gap: 12px;
+    justify-content: center;
+    align-items: center;
 `;
 
 UserProfilePage.getLayout = (page: ReactElement) => {

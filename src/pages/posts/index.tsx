@@ -3,7 +3,8 @@ import BaseLayout from "@/layouts/baseLayout";
 import CategoryNavigation from "@/components/posts/categoryNavigation";
 import usePostViewModeStore from "@/zustand/postViewMode";
 import PostViewModeSwitchButton from "@/components/posts/postViewModeSwitchButton";
-import List from "@/components/posts/postList";
+import PostMap from "@/components/posts/postMap";
+import PostList from "@/components/posts/postList";
 
 const PostsPage = () => {
     const { viewMode } = usePostViewModeStore();
@@ -14,10 +15,10 @@ const PostsPage = () => {
             {(() => {
                 switch (viewMode) {
                     case "MAP":
-                        return null;
+                        return <PostMap />;
 
                     case "LIST":
-                        return <List />;
+                        return <PostList />;
                 }
             })()}
             <PostViewModeSwitchButton />

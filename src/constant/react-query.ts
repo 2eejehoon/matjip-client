@@ -5,5 +5,6 @@ export const QUERY_KEY_MAP = {
 export const MUTATION_KEY_MAP = {
     LOGIN: "LOGIN",
     SIGNUP: "SIGNUP",
-    LOGOUT: "LOGOUT"
+    LOGOUT: "LOGOUT",
+    UPDATE_PROFILE: "UPDATE_PROFILE"
 } as const;

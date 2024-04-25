@@ -1,10 +1,15 @@
-import { User } from "@/types/schema";
+import { Profile } from "@/types/schema";
 import Axios from "./axios";
+import { UpdateUserProfileDto } from "@/types/user";
 
-type UserProfile = Omit<User, "password" | "refreshToken">;
+export const getProfile = async (): Promise<Profile> => {
+    const { data } = await Axios.get<Profile>("/users/profile");
 
-export const getUserProfile = async (): Promise<UserProfile> => {
-    const { data } = await Axios.get<UserProfile>("/users/profile");
+    return data;
+};
+
+export const updateProfile = async (updateUserProfileDto: UpdateUserProfileDto): Promise<Profile> => {
+    const { data } = await Axios.put("/users/profile", updateUserProfileDto);
 
     return data;
 };

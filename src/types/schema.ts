@@ -1,9 +1,7 @@
 export type User = {
     id: number;
     email: string;
-    name: string;
     password?: string;
-    photo?: string;
     profile?: Profile;
     posts?: Post[];
     likes?: Like[];
@@ -14,6 +12,7 @@ export type User = {
 
 export type Profile = {
     id: number;
+    name: string;
     photo?: string;
     userId: number;
     user: User;
