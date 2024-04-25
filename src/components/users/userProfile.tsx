@@ -60,8 +60,8 @@ const ImageWrapper = styled.div`
 
 const ImageUpload = styled(FiEdit2)`
     position: absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 5px;
+    right: 5px;
     padding: 4px;
     color: ${({ theme }) => theme.color.white};
     width: ${({ theme }) => theme.element.icon.width};
