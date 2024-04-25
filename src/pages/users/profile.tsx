@@ -1,12 +1,12 @@
 import BaseLayout from "@/layouts/baseLayout";
 import { ReactElement } from "react";
 import UserProfile from "@/components/users/userProfile";
-import { prefetchGetUserProfile } from "@/react-query/queries/getProfile";
 import { dehydrate } from "@tanstack/react-query";
 import styled from "styled-components";
+import { usePrefetchGetProfile as prefetchGetProfile } from "@/react-query/queries/getProfile";
 
 export const getServerSideProps = async () => {
-    const queryClient = prefetchGetUserProfile();
+    const queryClient = prefetchGetProfile();
 
     return {
         props: {

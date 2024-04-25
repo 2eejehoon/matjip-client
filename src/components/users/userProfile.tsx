@@ -1,16 +1,16 @@
 import Image from "next/image";
 import styled from "styled-components";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useGetUserProfile } from "@/react-query/queries/getProfile";
-import { useUpdateUserProfile } from "@/react-query/mutations/updateProfile";
+import { useGetProfile } from "@/react-query/queries/getProfile";
+import { useUpdateProfile } from "@/react-query/mutations/updateProfile";
 
 const defaultImage = "/static/default.png";
 
 const UserProfile = () => {
-    const userProfile = useGetUserProfile();
-    const updateUserProfile = useUpdateUserProfile();
+    const userProfile = useGetProfile();
+    const updateUserProfile = useUpdateProfile();
     const inputRef = useRef<HTMLInputElement>(null);
-    const [name, setName] = useState(userProfile.data?.name);
+    const [name, setName] = useState("");
     const imageSrc = userProfile.data?.photo ? userProfile.data?.photo : defaultImage;
 
     const onClickChangePhoto = () => {
@@ -32,7 +32,7 @@ const UserProfile = () => {
     };
 
     useEffect(() => {
-        setName(userProfile.data?.name);
+        userProfile.data?.name && setName(userProfile.data.name);
     }, [userProfile.isLoading]);
 
     return (
