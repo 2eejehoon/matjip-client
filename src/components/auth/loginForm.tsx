@@ -45,11 +45,11 @@ const LoginForm = () => {
                 <LoginButton onClick={onLoginClick}>로그인</LoginButton>
             </Form>
             <Container>
-                <Anchor href={ROUTE_MAP["SIGNUP"]}>회원가입</Anchor>
+                <Anchor href={ROUTE_MAP["AUTH_SIGNUP"]}>회원가입</Anchor>
                 <Divider />
-                <Anchor href={ROUTE_MAP["FIND_EMAIL"]}>이메일 찾기</Anchor>
+                <Anchor href={ROUTE_MAP["USERS_FIND_EMAIL"]}>이메일 찾기</Anchor>
                 <Divider />
-                <Anchor href={ROUTE_MAP["FIND_PASSWORD"]}>비밀번호 찾기</Anchor>
+                <Anchor href={ROUTE_MAP["USERS_FIND_PASSWORD"]}>비밀번호 찾기</Anchor>
             </Container>
             <Container>
                 <GoogleLogin />

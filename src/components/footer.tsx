@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { CiUser, CiHome } from "react-icons/ci";
+import { CiUser, CiHome, CiSearch, CiCirclePlus, CiViewList } from "react-icons/ci";
 import { ROUTE_MAP } from "@/utils/route";
 
 const Footer = () => {
@@ -15,25 +15,25 @@ const Footer = () => {
                         </Anchor>
                     </ListItem>
                     <ListItem>
-                        <Anchor href={ROUTE_MAP["LOGIN"]}>
-                            <Profile />
-                            <Text>로그인</Text>
+                        <Anchor href={ROUTE_MAP["POSTS"]}>
+                            <ArticleList />
+                            <Text>목록</Text>
                         </Anchor>
                     </ListItem>
                     <ListItem>
-                        <Anchor href={ROUTE_MAP["PROFILE"]}>
-                            <Profile />
-                            <Text>마이페이지</Text>
+                        <Anchor href={ROUTE_MAP["POSTS_CREATE"]}>
+                            <Plus />
+                            <Text>글쓰기</Text>
                         </Anchor>
                     </ListItem>
                     <ListItem>
-                        <Anchor href={ROUTE_MAP["PROFILE"]}>
-                            <Profile />
-                            <Text>마이페이지</Text>
+                        <Anchor href={ROUTE_MAP["POSTS_SEARCH"]}>
+                            <Search />
+                            <Text>검색</Text>
                         </Anchor>
                     </ListItem>
                     <ListItem>
-                        <Anchor href={ROUTE_MAP["PROFILE"]}>
+                        <Anchor href={ROUTE_MAP["USERS"]}>
                             <Profile />
                             <Text>마이페이지</Text>
                         </Anchor>
@@ -81,6 +81,7 @@ const Anchor = styled(Link)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 4px;
 `;
 
 const Text = styled.span`
@@ -93,20 +94,30 @@ const Home = styled(CiHome)`
     background-color: ${({ theme }) => theme.backgroundColor.white};
     width: ${({ theme }) => theme.element.icon.width};
     height: ${({ theme }) => theme.element.icon.height};
+`;
 
-    &:hover {
-        cursor: pointer;
-    }
+const ArticleList = styled(CiViewList)`
+    background-color: ${({ theme }) => theme.backgroundColor.white};
+    width: ${({ theme }) => theme.element.icon.width};
+    height: ${({ theme }) => theme.element.icon.height};
+`;
+
+const Plus = styled(CiCirclePlus)`
+    background-color: ${({ theme }) => theme.backgroundColor.white};
+    width: ${({ theme }) => theme.element.icon.width};
+    height: ${({ theme }) => theme.element.icon.height};
+`;
+
+const Search = styled(CiSearch)`
+    background-color: ${({ theme }) => theme.backgroundColor.white};
+    width: ${({ theme }) => theme.element.icon.width};
+    height: ${({ theme }) => theme.element.icon.height};
 `;
 
 const Profile = styled(CiUser)`
     background-color: ${({ theme }) => theme.backgroundColor.white};
     width: ${({ theme }) => theme.element.icon.width};
     height: ${({ theme }) => theme.element.icon.height};
-
-    &:hover {
-        cursor: pointer;
-    }
 `;
 
 export default Footer;

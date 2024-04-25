@@ -14,7 +14,7 @@ const PostsPage = () => {
             {(() => {
                 switch (viewMode) {
                     case "MAP":
-                        return;
+                        return null;
 
                     case "LIST":
                         return <List />;
