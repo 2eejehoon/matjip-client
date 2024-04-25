@@ -9,7 +9,11 @@ const defaultImage = "/static/default.png";
 const UserProfile = () => {
     const userProfile = useGetUserProfile();
     const inputRef = useRef<HTMLInputElement>(null);
-    const imageSrc = userProfile.data?.photo ? userProfile.data?.photo : defaultImage;
+    const imageSrc = userProfile.data?.photo
+        ? userProfile.data?.photo
+        : userProfile.data?.profile?.photo
+          ? userProfile.data?.profile?.photo
+          : defaultImage;
 
     const onUploadImage = () => {};
 
@@ -47,6 +51,8 @@ const ImageContainer = styled.div`
 
 const ImageWrapper = styled.div`
     position: relative;
+    width: 150px;
+    height: 150px;
     border: ${({ theme }) => theme.border.thin};
     border-radius: 50%;
     overflow: hidden;
