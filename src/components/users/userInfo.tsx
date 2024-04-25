@@ -8,14 +8,19 @@ const UserInfo = () => {
 
     return (
         <Wrapper>
-            <div>{userProfile.data?.name}</div>
+            <div>
+                <span>{userProfile.data?.email}</span>
+            </div>
+            <div>
+                <span>{userProfile.data?.name}</span>
+            </div>
         </Wrapper>
     );
 };
 
 const Wrapper = styled.div`
-    margin: 12px;
     padding: 12px;
+    gap: 12px;
     border: ${({ theme }) => theme.border.thin};
     border-radius: ${({ theme }) => theme.borderRadius.small};
     box-shadow: ${({ theme }) => theme.boxShadow};

@@ -16,6 +16,10 @@ export const signup = async ({ email, name, password, passwordConfirm }: SignupD
     return data;
 };
 
+export const logout = async (): Promise<void> => {
+    await Axios.post("/auth/logout");
+};
+
 export const getAccessToken = async (refreshToken: string): Promise<Token> => {
     Axios.defaults.headers.common["Authorization"] = `Bearer ${refreshToken}`;
     const { data } = await Axios.get<Token>("/auth/refreshToken");

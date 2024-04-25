@@ -9,7 +9,7 @@ export const useSignup = () => {
         mutationKey: [MUTATION_KEY_MAP.SIGNUP],
         mutationFn: signup,
         onSuccess: () => {
-            routeTo("LOGIN");
+            routeTo("AUTH_LOGIN");
         },
         onError: () => {}
     });
