@@ -30,7 +30,6 @@ const BottomSheet = ({
     });
     const heightRef = useRef<number>(defaultHeight);
     const stateRef = useRef<"default" | "expanded">("default");
-    const isScrollableRef = useRef<boolean>(false);
 
     useEffect(() => {
         if (isOpen) {

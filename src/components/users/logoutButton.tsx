@@ -1,7 +1,7 @@
 import { useLogout } from "@/react-query/mutations/logout";
 import styled from "styled-components";
 
-const UserLogoutButton = () => {
+const LogoutButton = () => {
     const logout = useLogout();
 
     const onLogout = () => {
@@ -19,4 +19,4 @@ const Button = styled.button`
     background-color: ${({ theme }) => theme.backgroundColor.white};
     box-shadow: ${({ theme }) => theme.boxShadow};
 `;
-export default UserLogoutButton;
+export default LogoutButton;

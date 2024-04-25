@@ -31,6 +31,8 @@ const UserProfile = () => {
         userProfile.data?.userId && updateUserProfile.mutate({ userId: userProfile.data.userId, name });
     };
 
+    console.log(userProfile.data);
+
     useEffect(() => {
         userProfile.data?.name && setName(userProfile.data.name);
     }, [userProfile.isLoading]);

@@ -8,7 +8,6 @@ export const useUpdateProfile = () => {
         mutationKey: [MUTATION_KEY_MAP.UPDATE_PROFILE],
         mutationFn: updateProfile,
         onSuccess: (profile) => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY_MAP.USER_PROFILE] });
             queryClient.setQueryData([QUERY_KEY_MAP.USER_PROFILE], profile);
         }
     });
