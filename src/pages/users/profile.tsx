@@ -16,10 +16,6 @@ export const getServerSideProps = async () => {
 };
 
 const UserProfilePage = () => {
-    const profile = useGetUserProfile();
-
-    console.log(profile.data);
-
     return (
         <>
             <UserNavigation />

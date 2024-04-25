@@ -2,19 +2,26 @@ import Image from "next/image";
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
 import { useRef } from "react";
+import { useGetUserProfile } from "@/react-query/queries/getUserProfile";
+
+const defaultImage = "/static/default.png";
 
 const UserProfile = () => {
+    const userProfile = useGetUserProfile();
     const inputRef = useRef<HTMLInputElement>(null);
+    const imageSrc = userProfile.data?.photo ? userProfile.data?.photo : defaultImage;
+
+    const onUploadImage = () => {};
 
     return (
         <Wrapper>
             <UserImage>
                 <ImageContainer>
                     <ImageWrapper>
-                        <Image alt="user-profile-image" src="/static/default.png" width={150} height={150} />
+                        <Image alt="user-profile-image" src={imageSrc} width={150} height={150} />
                     </ImageWrapper>
                     <ImageUpload onClick={() => inputRef.current && inputRef.current.click()} />
-                    <ImageUploadInput type="file" ref={inputRef} accept="image/*" />
+                    <ImageUploadInput type="file" ref={inputRef} accept="image/*" onChange={onUploadImage} />
                 </ImageContainer>
             </UserImage>
         </Wrapper>

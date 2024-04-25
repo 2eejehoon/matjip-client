@@ -1,7 +1,10 @@
+import { User } from "@/types/schema";
 import Axios from "./axios";
 
-export const getUserProfile = async () => {
-    const { data } = await Axios.get("/users/profile");
+type UserAndProfile = Omit<User, "password" | "refreshToken">;
+
+export const getUserAndProfile = async (): Promise<UserAndProfile> => {
+    const { data } = await Axios.get<UserAndProfile>("/users/profile");
 
     return data;
 };
